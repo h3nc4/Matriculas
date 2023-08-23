@@ -1,41 +1,25 @@
 # Laboratório 1 - Sistema de Matrículas
 
-# Integrantes:
+## Integrantes
+
     Gabriel Dolabela Marques
     João Pedro de Oliveira Pauletti
     Henrique Carvalho Almeida
 
-## Caso de uso
+## Descrição do Sistema
 
-![](./caso_de_uso.png)
+Uma universidade pretende informatizar seu sistema de matrículas. A secretaria da universidade gera o currículo para cada semestre e mantém as informações sobre as disciplinas, professores e alunos.
 
-## Histórias de Usuários
+Cada curso tem um nome, um determinado número de créditos e é constituído por diversas disciplinas.
 
+Os alunos podem se matricular em 4 disciplinas como 1ª opção (obrigatórias) e em mais 2 outras alternativas (optativas).
 
-    Eu, como uma estudante, quero me matricular em disciplinas para o próximo semestre, para que eu possa cumprir a carga de horas do curso.
+Há períodos para efetuar matrículas, durante os quais um aluno pode acessar o sistema para se matricular em disciplinas e/ou para cancelar matrículas feitas anteriormente.
 
-    Eu, como um estudante, quero ver quais disciplinas estão disponíveis para o próximo semestre, para que eu possa escolher as disciplinas que eu quero me matricular.
+Uma disciplina só fica ativa, isto é, só vai ocorrer no semestre seguinte se, no final do período de matrículas tiver, pelo menos, 3 alunos inscritos (matriculados). Caso contrário, a disciplina será cancelada. O número máximo de alunos inscritos a uma disciplina é de 60 e quando este número é atingido, as inscrições (matrículas) para essa disciplina são encerradas.
 
-    Eu, como um estudante, quero ver quais disciplinas eu já me matriculei, para que eu possa me planejar para o próximo semestre.
+Após um aluno se inscrever para um semestre, o sistema de cobranças é notificado pelo sistema de matrículas, de modo que o aluno possa ser cobrado pelas disciplinas daquele semestre.
 
-    Eu, como um estudante, quero conseguir desmatricular disciplinas, para que eu possa remediar erros de matrícula.
+Os professores podem acessar o sistema para saber quais são os alunos que estão matriculados em cada disciplina.
 
-    Eu, como um estudante, quero conseguir efetuar login no sistema, para que eu possa me matricular.
-
-    Eu, como um professor, quero ver quais disciplinas eu estou ministrando, para que eu possa me preparar para o próximo semestre.
-
-    Eu, como um professor, quero ver quais alunos estão matriculados em minha disciplina, para que eu possa ver quem está matriculado.
-
-    Eu, como um professor, quero conseguir efetuar login no sistema, para que eu possa ver quais alunos estão matriculados em minha disciplina e quais disciplinas estou associado.
-
-    Eu, como uma secretaria, quero cadastrar alunos, para que eles possam se matricular em disciplinas.
-
-    Eu, como uma secretaria, quero gerar currículo do semestre, para que as disciplinas efetivadas sejam registradas e organizadas.
-
-    Eu, como uma secretaria, quero gerar relatório de matrículas, para que eu possa ver quais alunos estão matriculados em quais disciplinas.
-
-    Eu, como uma secretaria, quero manter informações de status da disciplina, para que as suas informações estejam atualizadas.
-
-    Eu, como uma secretaria, quero manter informações de matricula de aluno, para que as suas informações estejam atualizadas.
-
-    Eu, como uma secretaria, quero manter informações das disciplinas atribuidas ao professor, para que as suas informações estejam atualizadas.
+Todos os usuários do sistema têm senhas que são utilizadas para validação do respectivo login.
