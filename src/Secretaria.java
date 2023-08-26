@@ -48,4 +48,10 @@ public class Secretaria implements Usuario {
                 ? this
                 : null;
     }
+
+    @Override
+    public Boolean menu() {
+        return true;
+    }
+
 }

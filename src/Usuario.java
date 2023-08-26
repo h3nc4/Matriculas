@@ -26,12 +26,14 @@
  * @see Secretaria
  */
 public interface Usuario {
+
     /**
      * Realiza o login do usuario
      * 
      * @param matricula matricula do usuario
      * @param passwd    senha do usuario
-     * @return {@code TRUE} se o login foi realizado com sucesso, {@code FALSE} caso contrario
+     * @return {@code TRUE} se o login foi realizado com sucesso, {@code FALSE} caso
+     *         contrario
      */
     public Usuario login(String passwd);
 
@@ -41,4 +43,5 @@ public interface Usuario {
      * @return {@code TRUE} se o usuário deseja continuar no sistema e {@code FALSE}
      */
     public Boolean menu();
+
 }

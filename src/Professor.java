@@ -63,4 +63,9 @@ public class Professor implements Usuario {
                 : null;
     }
 
+    @Override
+    public Boolean menu(){
+        return true;
+    }
+
 }

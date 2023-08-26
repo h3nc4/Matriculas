@@ -18,7 +18,6 @@
  * <https://www.gnu.org/licenses/>.
 */
 
-import java.util.List;
 import java.util.HashMap;
 
 /**
@@ -57,8 +56,8 @@ public class Curso {
         return this.disciplinas.containsKey(nome);
     }
 
-    /** Retorna o nome do curso
-     *  @return nome do curso */
+    /** Retorna as disciplinas iniciais do curso
+     *  @return disciplinas iniciais do curso */
     public Disciplina[] getDisciplinasIniciais() {
         return this.disciplinasIni;
     }

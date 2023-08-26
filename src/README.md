@@ -2,7 +2,7 @@
 
 ## Requisitos
 
-- Java 19
+- Java 20
 
 ## Execução
 
