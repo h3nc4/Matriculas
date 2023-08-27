@@ -54,4 +54,9 @@ public class Secretaria implements Usuario {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Secretaria " + this.matricula;
+    }
+
 }

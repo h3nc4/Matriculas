@@ -155,4 +155,9 @@ public class Aluno implements Usuario {
             return false;
     }
 
+    @Override
+    public String toString() {
+        return "Aluno " + this.matricula + " do curso " + this.curso.getNome()+ " matriculado em " + this.disciplinas.length + " disciplinas: " + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
+    }
+
 }

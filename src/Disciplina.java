@@ -55,16 +55,18 @@ public class Disciplina {
         this.qtdAlunos = 0;
     }
 
+    @Override
+    public String toString() {
+        return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + "de " + this.creditos
+                + " creditos.\n Ha " + this.qtdAlunos + " alunos matriculados atualmente.";
+    } //@formatter:off
+
     /** Retorna o nome da disciplina
      * @return nome da disciplina */
-    public String getNome() {
-        return this.NOME;
-    }
+    public String getNome() { return this.NOME;}
 
     /** Retorna se a disciplina é obrigatória
      * @return se a disciplina é obrigatória */
-    public boolean eObrigatria() {
-        return !this.opcional;
-    }
+    public boolean eObrigatria() { return !this.opcional;}
 
 }

@@ -68,4 +68,9 @@ public class Professor implements Usuario {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
+    }
+
 }

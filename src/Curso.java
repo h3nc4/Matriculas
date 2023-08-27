@@ -56,16 +56,18 @@ public class Curso {
         return this.disciplinas.containsKey(nome);
     }
 
+    @Override
+    public String toString() {
+        return "Curso " + this.nome + ", de " + this.creditos + " creditos." + this.creditos + "\n Tem no total "
+                + this.disciplinas.size() + " disciplinas.";
+    } // @formatter:off
+
     /** Retorna as disciplinas iniciais do curso
      *  @return disciplinas iniciais do curso */
-    public Disciplina[] getDisciplinasIniciais() {
-        return this.disciplinasIni;
-    }
+    public Disciplina[] getDisciplinasIniciais() { return this.disciplinasIni; }
 
     /** Retorna o nome do curso
      *  @return nome do curso */
-    public String getNome() {
-        return this.nome;
-    }
+    public String getNome() { return this.nome; }
 
 }
