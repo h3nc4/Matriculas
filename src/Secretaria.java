@@ -51,6 +51,18 @@ public class Secretaria implements Usuario {
 
     @Override
     public Boolean menu() {
+        Integer escolha = App.lerInt(
+                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Sair\n ");
+        switch (escolha) {
+            case 1 -> App.novoAluno();
+            case 2 -> App.novoProfessor();
+            case 3 -> App.novaDisciplina();
+            case 4 -> App.novoCurso();
+            case 0 -> {
+                System.out.println("Saindo...");
+                return false;
+            }
+        }
         return true;
     }
 

@@ -21,6 +21,10 @@
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.management.openmbean.InvalidKeyException;
 
 /**
  * Classe principal do programa.
@@ -28,7 +32,7 @@ import java.util.HashMap;
 public class App {
 
     /** Matrícula atual */
-    private static Integer matriculaAtual = 1;
+    private static Integer proxMatricula = 1;
 
     /** Usuário atual */
     private static Usuario usuarioAtual = null;
@@ -60,7 +64,7 @@ public class App {
      * @return string lida do console.
      */
     public static String lerStr(String mensagem) {
-        return System.console().readLine(mensagem);
+        return System.console().readLine(mensagem).trim();
     }
 
     /**
@@ -77,12 +81,15 @@ public class App {
         }
     }
 
+    /**
+     * Limpa o console.
+     */
     public static void clearConsole() {
         try {
-            if (System.getProperty("os.name").toLowerCase().contains("win"))
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            else
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            new ProcessBuilder(System.getProperty("os.name").toLowerCase().contains("win") ? "cls" : "clear")
+                    .inheritIO()
+                    .start()
+                    .waitFor();
         } catch (IOException | InterruptedException e) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
@@ -97,7 +104,7 @@ public class App {
         int hour = LocalTime.now().getHour();
         return hour >= 4 && hour < 12 ? "Bom dia"
                 : hour < 18 ? "Boa tarde"
-                        :  "Boa Noite";
+                        : "Boa Noite";
     }
 
     /**
@@ -109,14 +116,108 @@ public class App {
             App.clearConsole();
             App.usuarioAtual = usuarios
                     .get(App.lerInt(
-                            " " + App.saudacao() + ", bem vindo ao sistema de matrículas da PUCMG.\n Login: " //
+                            " " + App.saudacao() + ", bem vindo ao sistema de matriculas da PUCMG.\n Matricula: " //
                     )).login(
                             App.lerStr(" Senha: ") //
                     );
             lock = usuarioAtual == null;
             if (lock)
-                System.out.println(" ERRO: Usuário ou senha inválidos.");
+                System.out.println(" ERRO: Usuário ou senha invalidos.");
         }
+    }
+
+    /**
+     * Cria e insere um novo aluno no mapa de usuários.
+     */
+    public static void novoAluno() {
+        String senha = App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ");
+        Curso curso = null;
+        while (curso == null) {
+            curso = App.cursos.get(App.lerStr(" Curso: ").toLowerCase());
+            if (curso == null)
+                System.out.println(" ERRO: Curso invalido.");
+        }
+        App.usuarios.put(
+                App.proxMatricula,
+                new Aluno(
+                        App.proxMatricula++,
+                        senha,
+                        curso //
+                ) //
+        );
+    }
+
+    /**
+     * Cria e insere um novo professor no mapa de usuários.
+     */
+    public static void novoProfessor() {
+        App.usuarios.put(
+                App.proxMatricula,
+                new Professor(
+                        App.proxMatricula++,
+                        App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                ) //
+        );
+    }
+
+    /**
+     * Cria e insere um novo curso no mapa de cursos.
+     */
+    public static void novoCurso() {
+        String nome = App.lerStr(" Nome: ").toLowerCase();
+        HashMap<String, Disciplina> disciplinasC = null;
+        Disciplina[] disciplinasIni = null;
+        try {
+            disciplinasC = (HashMap<String, Disciplina>) Stream
+                    .of(App.lerStr(" Digite as disciplinas do curso separadas por vírgula: ").split(","))
+                    .map(d -> {
+                        Disciplina add = App.disciplinas.get(d.trim().toLowerCase());
+                        if (add == null)
+                            throw new InvalidKeyException();
+                        return add;
+                    })
+                    .collect(
+                            Collectors.toMap(d -> d.getNome(), d -> d) //
+                    );
+            disciplinasIni = (Disciplina[]) Stream
+                    .of(App.lerStr(" Digite as 4 disciplinas iniciais do curso separadas por vírgula: ").split(","))
+                    .map(d -> {
+                        Disciplina add = App.disciplinas.get(d.trim().toLowerCase());
+                        if (add == null)
+                            throw new InvalidKeyException();
+                        return add;
+                    })
+                    .collect(Collectors.toList())
+                    .toArray();
+        } catch (InvalidKeyException e) {
+            System.out.println(" ERRO: Disciplina nao existente. Adicione as disciplinas desejadas manualmente.");
+            return;
+        }
+
+        App.cursos.put(
+                nome,
+                new Curso(
+                        nome,
+                        disciplinasC,
+                        App.lerInt(" Creditos: "),
+                        disciplinasIni //
+                ) //
+        );
+    }
+
+    /**
+     * Cria e insere uma nova disciplina no mapa de disciplinas.
+     */
+    public static void novaDisciplina() {
+        String nome = App.lerStr(" Nome: ").toLowerCase();
+        App.disciplinas.put(
+                nome,
+                new Disciplina(
+                        nome,
+                        App.lerInt(" Creditos: "),
+                        App.lerStr(" E opcional? (s/n): ").toLowerCase().equals("s") //
+                ) //
+        );
     }
 
     /**

@@ -108,7 +108,7 @@ public class Aluno implements Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = App
-                .lerInt(" Bem vindo aluno " + this.matricula + "\n 1 - Matricular\n 2 - Desmatricular\n 0 - Sair\n");
+                .lerInt(" Bem vindo aluno " + this.matricula + "\n 1 - Matricular\n 2 - Desmatricular\n 0 - Sair\n ");
         int q = 0;
         if (escolha == 1) {
             System.out.println(
@@ -157,7 +157,9 @@ public class Aluno implements Usuario {
 
     @Override
     public String toString() {
-        return "Aluno " + this.matricula + " do curso " + this.curso.getNome()+ " matriculado em " + this.disciplinas.length + " disciplinas: " + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
+        return "Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
+                + this.disciplinas.length + " disciplinas: "
+                + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
     }
 
 }
