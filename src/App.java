@@ -18,6 +18,7 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
 
@@ -47,14 +48,10 @@ public class App {
 
     /** Busca uma disciplina
      * @return disciplina*/ 
-    public static Disciplina getDisciplina(String nome) {
-        return disciplinas.get(nome);
-    }
+    public static Disciplina getDisciplina(String nome) { return disciplinas.get(nome); }
 
     /** classe não instanciável */
-    private App() {
-        throw new InstantiationError("Classe nao instanciavel");
-    }
+    private App() { throw new InstantiationError("Classe nao instanciavel"); } // @formatter:on
 
     /**
      * Método que lê uma string do console através do {@link System#console()}.
@@ -80,17 +77,27 @@ public class App {
         }
     }
 
+    public static void clearConsole() {
+        try {
+            if (System.getProperty("os.name").toLowerCase().contains("win"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException e) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        }
+    }
+
     /**
-     * Retorna uma saudação de acordo com o horário atual.
+     * Retorna a hora do dia em que o programa está sendo executado.
      * 
-     * @return saudação de acordo com o horário atual.
+     * @return hora do dia.
      */
-    public static String greet() {
+    public static String saudacao() {
         int hour = LocalTime.now().getHour();
-        return hour >= 5 && hour < 12 ? "Good morning!"
-                : hour < 17 ? "Good afternoon!"
-                        : hour < 21 ? "Good evening!"
-                                : "Good night!";
+        return hour >= 4 && hour < 12 ? "Bom dia"
+                : hour < 18 ? "Boa tarde"
+                        :  "Boa Noite";
     }
 
     /**
@@ -99,9 +106,10 @@ public class App {
     public static void login() {
         Boolean lock = true;
         while (lock) {
+            App.clearConsole();
             App.usuarioAtual = usuarios
                     .get(App.lerInt(
-                            App.greet() + "\n Bem vindo ao sistema de matrículas da PUCMG!\n Login:"//
+                            " " + App.saudacao() + ", bem vindo ao sistema de matrículas da PUCMG.\n Login: " //
                     )).login(
                             App.lerStr(" Senha: ") //
                     );
@@ -120,8 +128,12 @@ public class App {
     public static void main(String[] args) throws Throwable {
         App.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
-        while (true) {
+        while (true) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
             App.login();
+            while (App.usuarioAtual.menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
+                                            // TRUE, o menu é exibido novamente, caso contrário, o usuário é
+                                            // deslogado e enviado para o loop externo
+                ;
         }
     }
 

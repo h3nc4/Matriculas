@@ -9,5 +9,5 @@
 Para executar o programa
 
 ```bash
-    java -jar ./run_me.jar
+    java -jar ./Matriculas.jar
 ```

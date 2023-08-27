@@ -19,7 +19,7 @@
 */
 
 /**
- * Interface que define o comportamento de um usuario do sistema
+ * Interface que define o comportamento de um usuário do sistema
  * 
  * @see Aluno
  * @see Professor
@@ -28,10 +28,10 @@
 public interface Usuario {
 
     /**
-     * Realiza o login do usuario
+     * Realiza o login do usuário
      * 
-     * @param matricula matricula do usuario
-     * @param passwd    senha do usuario
+     * @param matricula matricula do usuário
+     * @param passwd    senha do usuário
      * @return {@code TRUE} se o login foi realizado com sucesso, {@code FALSE} caso
      *         contrario
      */
