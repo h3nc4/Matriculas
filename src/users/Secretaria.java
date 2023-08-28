@@ -18,21 +18,19 @@
  * <https://www.gnu.org/licenses/>.
 */
 
-import javax.management.openmbean.InvalidKeyException;
-import javax.naming.OperationNotSupportedException;
+package users;
+
+import error.InvalidKeyException;
+import error.OperationNotSupportedException;
+
+import app.App;
 
 /**
  * Classe que representa uma secretaria
  * 
  * @see Usuario
  */
-public class Secretaria implements Usuario {
-
-    /** matricula da secretaria */
-    private Integer matricula;
-
-    /** senha da secretaria */
-    private String passwd;
+public class Secretaria extends Usuario {
 
     /**
      * Construtor da classe Secretaria
@@ -41,15 +39,7 @@ public class Secretaria implements Usuario {
      * @param passwd    senha da secretaria
      */
     public Secretaria(Integer matricula, String passwd) {
-        this.matricula = matricula;
-        this.passwd = passwd;
-    }
-
-    @Override
-    public Usuario login(String passwd) {
-        return this.passwd.equals(passwd) // verificar se a matricula e a senha são iguais as da secretaria
-                ? this
-                : null;
+        super(matricula, passwd);
     }
 
     @Override

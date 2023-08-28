@@ -18,6 +18,8 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+package users;
+
 /**
  * Interface que define o comportamento de um usuário do sistema
  * 
@@ -25,23 +27,43 @@
  * @see Professor
  * @see Secretaria
  */
-public interface Usuario {
+abstract public class Usuario {
+
+    /** matricula */
+    Integer matricula;
+
+    /** senha */
+    String passwd;
+
+    /**
+     * Construtor da classe Usuario
+     * 
+     * @param matricula matricula do usuário
+     * @param passwd    senha do usuário
+     */
+    Usuario(Integer matricula, String passwd) {
+        this.matricula = matricula;
+        this.passwd = passwd;
+    }
 
     /**
      * Realiza o login do usuário
      * 
-     * @param matricula matricula do usuário
      * @param passwd    senha do usuário
      * @return {@code TRUE} se o login foi realizado com sucesso, {@code FALSE} caso
-     *         contrario
+     *         contrário
      */
-    public Usuario login(String passwd);
+    public Usuario login(String passwd) {
+        return this.passwd.equals(passwd) // verificar se a matricula e a senha são iguais as do usuário
+                ? this
+                : null;
+    }
 
     /**
      * Menu de opções do usuário
      * 
      * @return {@code TRUE} se o usuário deseja continuar no sistema e {@code FALSE}
      */
-    public Boolean menu();
+    abstract public Boolean menu();
 
 }

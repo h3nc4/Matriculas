@@ -18,14 +18,23 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+package app;
+
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.management.openmbean.InvalidKeyException;
-import javax.naming.OperationNotSupportedException;
+import error.InvalidKeyException;
+import error.OperationNotSupportedException;
+
+import curso.Curso;
+import curso.Disciplina;
+import users.Aluno;
+import users.Professor;
+import users.Secretaria;
+import users.Usuario;
 
 /**
  * Classe principal do programa.
@@ -48,10 +57,12 @@ public class App {
     private static HashMap<String, Disciplina> disciplinas = new HashMap<>();
 
     /** Retorna um curso
+     * @param nome nome do curso
      * @return curso*/
     public static Curso getCurso(String nome) { return cursos.get(nome); }
 
     /** Busca uma disciplina
+     * @param nome nome da disciplina
      * @return disciplina*/ 
     public static Disciplina getDisciplina(String nome) { return disciplinas.get(nome); }
 
@@ -166,7 +177,13 @@ public class App {
         );
     }
 
-    public static Stream<Disciplina> buscaDisciplinas(String mensagem) {
+    /**
+     * Busca disciplinas digitadas pelo usuário no mapa de disciplinas.
+     * 
+     * @param mensagem a ser exibida ao usuário.
+     * @return stream de disciplinas de acordo com o que o usuário digitou.
+     */
+    private static Stream<Disciplina> buscaDisciplinas(String mensagem) {
         return Stream.of(App.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
                     Disciplina add = App.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
@@ -218,7 +235,7 @@ public class App {
                 new Disciplina(
                         nome,
                         App.lerInt(" Creditos: "),
-                        App.lerStr(" E opcional? (s/n): ").toLowerCase().equals("s") //
+                        App.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s") //
                 ) //
         );
     }

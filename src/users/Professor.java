@@ -18,20 +18,18 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+package users;
+
 import java.util.List;
+
+import curso.Disciplina;
 
 /**
  * Classe que representa um professor
  * 
  * @see Usuario
  */
-public class Professor implements Usuario {
-
-    /** matricula do professor */
-    private Integer matricula;
-
-    /** senha do professor */
-    private String passwd;
+public class Professor extends Usuario {
 
     /** disciplinas do professor */
     private List<Disciplina> disciplinas;
@@ -43,8 +41,7 @@ public class Professor implements Usuario {
      * @param passwd    senha do professor
      */
     public Professor(Integer matricula, String passwd) {
-        this.matricula = matricula;
-        this.passwd = passwd;
+        super(matricula, passwd);
     }
 
     /**
@@ -54,13 +51,6 @@ public class Professor implements Usuario {
      */
     public void addDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
-    }
-
-    @Override
-    public Usuario login(String passwd) {
-        return this.passwd.equals(passwd) // verificar se a matricula e a senha são iguais as do professor
-                ? this
-                : null;
     }
 
     @Override

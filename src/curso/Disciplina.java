@@ -18,6 +18,8 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+package curso;
+
 /**
  * Classe que representa uma disciplina
  */

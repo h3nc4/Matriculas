@@ -18,22 +18,22 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+package users;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
+
+import curso.Curso;
+import curso.Disciplina;
+import app.App;
 
 /**
  * Classe que representa um aluno
  * 
  * @see Usuario
  */
-public class Aluno implements Usuario {
-
-    /** matricula do aluno */
-    private Integer matricula;
-
-    /** senha do aluno */
-    private String passwd;
+public class Aluno extends Usuario {
 
     /** curso do aluno */
     private Curso curso;
@@ -50,24 +50,15 @@ public class Aluno implements Usuario {
      * @param curso     curso do aluno
      */
     public Aluno(Integer matricula, String passwd, Curso curso) {
-        this.matricula = matricula;
-        this.passwd = passwd;
+        super(matricula, passwd);
         this.curso = curso;
         this.disciplinas = this.curso.getDisciplinasIniciais();
-    }
-
-    @Override
-    public Usuario login(String passwd) {
-        return this.passwd.equals(passwd) // verificar se a matricula e a senha são iguais as do aluno
-                ? this
-                : null;
     }
 
     /**
      * Matricula o aluno em disciplinas
      * 
-     * @param disciplinasObg disciplinas obrigatórias, podem ser no máximo 4
-     * @param disciplinasOpt disciplinas opcionais, podem ser no máximo 2
+     * @param disciplinas disciplinas a serem matriculadas
      * @return {@code TRUE} se o aluno foi matriculado em pelo menos uma disciplina
      *         e {@code FALSE} caso contrário
      */

@@ -17,6 +17,7 @@
  * General Public License along with Sistema de matriculas PUC. If not, see
  * <https://www.gnu.org/licenses/>.
 */
+package curso;
 
 import java.util.HashMap;
 
@@ -52,6 +53,13 @@ public class Curso {
         this.disciplinasIni = disciplinasIni;
     }
 
+    /**
+     * Verifica se uma disciplina está no curso
+     * 
+     * @param nome nome da disciplina
+     * @return {@code TRUE} se a disciplina está no curso, {@code FALSE} caso
+     *        contrário
+     */
     public Boolean estaNoCurso(String nome) {
         return this.disciplinas.containsKey(nome);
     }
