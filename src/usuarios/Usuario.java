@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
 */
 
-package users;
+package usuarios;
 
 /**
  * Interface que define o comportamento de um usuário do sistema

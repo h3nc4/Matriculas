@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class Curso {
 
     /** nome do curso */
-    private final String nome;
+    private final String NOME;
 
     /** creditos do curso */
     private Integer creditos;
@@ -47,7 +47,7 @@ public class Curso {
      * @param disciplinasIni disciplinas iniciais do curso
      */
     public Curso(String nome, HashMap<String, Disciplina> disciplinas, int creditos, Disciplina[] disciplinasIni) {
-        this.nome = nome;
+        this.NOME = nome;
         this.disciplinas = disciplinas;
         this.creditos = creditos;
         this.disciplinasIni = disciplinasIni;
@@ -58,7 +58,7 @@ public class Curso {
      * 
      * @param nome nome da disciplina
      * @return {@code TRUE} se a disciplina está no curso, {@code FALSE} caso
-     *        contrário
+     *         contrário
      */
     public Boolean estaNoCurso(String nome) {
         return this.disciplinas.containsKey(nome);
@@ -66,7 +66,7 @@ public class Curso {
 
     @Override
     public String toString() {
-        return "Curso " + this.nome + ", de " + this.creditos + " creditos." + this.creditos + "\n Tem no total "
+        return "Curso " + this.NOME + ", de " + this.creditos + " creditos." + this.creditos + "\n Tem no total "
                 + this.disciplinas.size() + " disciplinas.";
     } // @formatter:off
 
@@ -76,6 +76,6 @@ public class Curso {
 
     /** Retorna o nome do curso
      *  @return nome do curso */
-    public String getNome() { return this.nome; }
+    public String getNome() { return this.NOME; }
 
 }

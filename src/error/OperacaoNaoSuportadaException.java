@@ -21,16 +21,14 @@
 package error;
 
 /**
- * Exceção lançada quando uma chave inválida é utilizada em busca de um elemento
+ * Exceção lançada quando uma operação não é suportada
  */
-public class InvalidKeyException extends RuntimeException {
+public class OperacaoNaoSuportadaException extends RuntimeException {
 
     /**
-     * Constrói uma nova exceção com a mensagem especificada
-     * 
-     * @param message a ser exibida para o usuário
+     * Constrói uma nova exceção
      */
-    public InvalidKeyException(String message) {
-        super(message);
+    public OperacaoNaoSuportadaException() {
+        super();
     }
 }

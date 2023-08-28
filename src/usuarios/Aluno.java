@@ -18,7 +18,7 @@
  * <https://www.gnu.org/licenses/>.
 */
 
-package users;
+package usuarios;
 
 import java.util.LinkedList;
 import java.util.List;

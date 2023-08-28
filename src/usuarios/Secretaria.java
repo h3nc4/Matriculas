@@ -18,10 +18,10 @@
  * <https://www.gnu.org/licenses/>.
 */
 
-package users;
+package usuarios;
 
-import error.InvalidKeyException;
-import error.OperationNotSupportedException;
+import error.ChaveInvalidaException;
+import error.OperacaoNaoSuportadaException;
 
 import app.App;
 
@@ -53,10 +53,10 @@ public class Secretaria extends Usuario {
             case 4 -> {
                 try {
                     App.novoCurso();
-                } catch (InvalidKeyException e) {
+                } catch (ChaveInvalidaException e) {
                     System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
                             + "\", adicione esta disciplina ao sistema antes de criar um curso.");
-                } catch (OperationNotSupportedException e) {
+                } catch (OperacaoNaoSuportadaException e) {
                     System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas iniciais.");
                 }
             }

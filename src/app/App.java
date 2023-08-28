@@ -26,15 +26,14 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import error.InvalidKeyException;
-import error.OperationNotSupportedException;
-
+import error.ChaveInvalidaException;
+import error.OperacaoNaoSuportadaException;
+import usuarios.Aluno;
+import usuarios.Professor;
+import usuarios.Secretaria;
+import usuarios.Usuario;
 import curso.Curso;
 import curso.Disciplina;
-import users.Aluno;
-import users.Professor;
-import users.Secretaria;
-import users.Usuario;
 
 /**
  * Classe principal do programa.
@@ -188,8 +187,8 @@ public class App {
                 .map(d -> {
                     Disciplina add = App.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
                     if (add == null)
-                        throw new InvalidKeyException(d); // caso a disciplina não exista, lança uma exceção passando
-                                                          // o nome da disciplina para avisar o usuário
+                        throw new ChaveInvalidaException(d); // caso a disciplina não exista, lança uma exceção passando
+                                                             // o nome da disciplina para avisar o usuário
                     return add;
                 });
     }
@@ -197,7 +196,7 @@ public class App {
     /**
      * Cria e insere um novo curso no mapa de cursos.
      */
-    public static void novoCurso() throws InvalidKeyException, OperationNotSupportedException {
+    public static void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = App.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
         HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) App
@@ -212,7 +211,7 @@ public class App {
                 .toArray(Disciplina[]::new); // transforma a lista em um array
 
         if (disciplinasIni.length != 4) // caso não tenham sido adicionadas 4 disciplinas, lança uma exceção
-            throw new OperationNotSupportedException();
+            throw new OperacaoNaoSuportadaException();
 
         App.cursos.put(
                 nome,

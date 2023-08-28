@@ -6,7 +6,7 @@
 
 ## Execução
 
-Para executar o programa
+Para executar o programa, baixe o arquivo .jar no repositório e execute o comando:
 
 ```bash
     java -jar ./Matriculas.jar
