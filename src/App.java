@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.management.openmbean.InvalidKeyException;
+import javax.naming.OperationNotSupportedException;
 
 /**
  * Classe principal do programa.
@@ -114,15 +115,20 @@ public class App {
         Boolean lock = true;
         while (lock) {
             App.clearConsole();
-            App.usuarioAtual = usuarios
-                    .get(App.lerInt(
-                            " " + App.saudacao() + ", bem vindo ao sistema de matriculas da PUCMG.\n Matricula: " //
-                    )).login(
-                            App.lerStr(" Senha: ") //
-                    );
+            try {
+                App.usuarioAtual = usuarios
+                        .get(App.lerInt(
+                                " " + App.saudacao()
+                                        + ", bem vindo ao sistema de matriculas da PUCMG. (ctrl+c para sair)\n Matricula: " //
+                        )).login(
+                                App.lerStr(" Senha: ") //
+                        );
+            } catch (NullPointerException e) {
+                System.out.println(" ERRO: Usuario nao existente.");
+            }
             lock = usuarioAtual == null;
             if (lock)
-                System.out.println(" ERRO: Usuário ou senha invalidos.");
+                System.out.println(" ERRO: Senha incorreta.");
         }
     }
 
@@ -160,39 +166,36 @@ public class App {
         );
     }
 
+    public static Stream<Disciplina> buscaDisciplinas(String mensagem) {
+        return Stream.of(App.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
+                .map(d -> {
+                    Disciplina add = App.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
+                    if (add == null)
+                        throw new InvalidKeyException(d); // caso a disciplina não exista, lança uma exceção passando
+                                                          // o nome da disciplina para avisar o usuário
+                    return add;
+                });
+    }
+
     /**
      * Cria e insere um novo curso no mapa de cursos.
      */
-    public static void novoCurso() {
-        String nome = App.lerStr(" Nome: ").toLowerCase();
-        HashMap<String, Disciplina> disciplinasC = null;
-        Disciplina[] disciplinasIni = null;
-        try {
-            disciplinasC = (HashMap<String, Disciplina>) Stream
-                    .of(App.lerStr(" Digite as disciplinas do curso separadas por vírgula: ").split(","))
-                    .map(d -> {
-                        Disciplina add = App.disciplinas.get(d.trim().toLowerCase());
-                        if (add == null)
-                            throw new InvalidKeyException();
-                        return add;
-                    })
-                    .collect(
-                            Collectors.toMap(d -> d.getNome(), d -> d) //
-                    );
-            disciplinasIni = (Disciplina[]) Stream
-                    .of(App.lerStr(" Digite as 4 disciplinas iniciais do curso separadas por vírgula: ").split(","))
-                    .map(d -> {
-                        Disciplina add = App.disciplinas.get(d.trim().toLowerCase());
-                        if (add == null)
-                            throw new InvalidKeyException();
-                        return add;
-                    })
-                    .collect(Collectors.toList())
-                    .toArray();
-        } catch (InvalidKeyException e) {
-            System.out.println(" ERRO: Disciplina nao existente. Adicione as disciplinas desejadas manualmente.");
-            return;
-        }
+    public static void novoCurso() throws InvalidKeyException, OperationNotSupportedException {
+        String nome = App.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
+
+        HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) App
+                .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula: ")
+                .collect(
+                        Collectors.toMap(d -> d.getNome(), d -> d) //
+                ); // transforma o stream em um mapa e o retorna para a variável disciplinasC
+
+        Disciplina[] disciplinasIni = App
+                .buscaDisciplinas(" Digite as 4 disciplinas iniciais do curso separadas por virgula: ")
+                .collect(Collectors.toList()) // transforma o stream em uma lista
+                .toArray(Disciplina[]::new); // transforma a lista em um array
+
+        if (disciplinasIni.length != 4) // caso não tenham sido adicionadas 4 disciplinas, lança uma exceção
+            throw new OperationNotSupportedException();
 
         App.cursos.put(
                 nome,

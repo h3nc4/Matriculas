@@ -18,6 +18,9 @@
  * <https://www.gnu.org/licenses/>.
 */
 
+import javax.management.openmbean.InvalidKeyException;
+import javax.naming.OperationNotSupportedException;
+
 /**
  * Classe que representa uma secretaria
  * 
@@ -57,7 +60,16 @@ public class Secretaria implements Usuario {
             case 1 -> App.novoAluno();
             case 2 -> App.novoProfessor();
             case 3 -> App.novaDisciplina();
-            case 4 -> App.novoCurso();
+            case 4 -> {
+                try {
+                    App.novoCurso();
+                } catch (InvalidKeyException e) {
+                    System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
+                            + "\", adicione esta disciplina ao sistema antes de criar um curso.");
+                } catch (OperationNotSupportedException e) {
+                    System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas iniciais.");
+                }
+            }
             case 0 -> {
                 System.out.println("Saindo...");
                 return false;
