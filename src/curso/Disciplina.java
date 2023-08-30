@@ -23,7 +23,7 @@ package curso;
 /**
  * Classe que representa uma disciplina
  */
-public class Disciplina {
+public class Disciplina implements java.io.Serializable {
 
     /** disciplina é opcional */
     private Boolean opcional;

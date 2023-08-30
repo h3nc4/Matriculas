@@ -27,7 +27,7 @@ package usuarios;
  * @see Professor
  * @see Secretaria
  */
-abstract public class Usuario {
+abstract public class Usuario implements java.io.Serializable {
 
     /** matricula */
     Integer matricula;

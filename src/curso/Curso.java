@@ -24,7 +24,7 @@ import java.util.HashMap;
 /**
  * Classe que representa um curso
  */
-public class Curso {
+public class Curso implements java.io.Serializable {
 
     /** nome do curso */
     private final String NOME;

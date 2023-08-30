@@ -113,33 +113,29 @@ public class App {
      */
     public static String saudacao() {
         int hour = LocalTime.now().getHour();
-        return hour >= 4 && hour < 12 ? "Bom dia"
+        return (hour >= 4 && hour < 12 ? "Bom dia"
                 : hour < 18 ? "Boa tarde"
-                        : "Boa Noite";
+                        : "Boa Noite")
+                + ", bem vindo ao sistema de matriculas da PUCMG. (-1 para sair)\n Matricula: ";
     }
 
     /**
      * Realiza o login do usuário.
      */
-    public static void login() {
-        Boolean lock = true;
-        while (lock) {
-            App.clearConsole();
-            try {
-                App.usuarioAtual = usuarios
-                        .get(App.lerInt(
-                                " " + App.saudacao()
-                                        + ", bem vindo ao sistema de matriculas da PUCMG. (ctrl+c para sair)\n Matricula: " //
-                        )).login(
-                                App.lerStr(" Senha: ") //
-                        );
-            } catch (NullPointerException e) {
-                System.out.println(" ERRO: Usuario nao existente.");
-            }
-            lock = usuarioAtual == null;
-            if (lock)
-                System.out.println(" ERRO: Senha incorreta.");
+    public static Boolean login() {
+        App.clearConsole();
+        try {
+            int user = App.lerInt(" " + App.saudacao());
+            if (user == -1)
+                return Boolean.FALSE;
+            App.usuarioAtual = usuarios.get(user).login(App.lerStr(" Senha: "));
+
+        } catch (NullPointerException e) {
+            System.out.println(" ERRO: Usuario nao existente.");
         }
+        if (usuarioAtual == null)
+            System.out.println(" ERRO: Senha incorreta.");
+        return Boolean.TRUE;
     }
 
     /**
@@ -248,8 +244,7 @@ public class App {
     public static void main(String[] args) throws Throwable {
         App.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
-        while (true) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
-            App.login();
+        while (App.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
             while (App.usuarioAtual.menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
                                             // TRUE, o menu é exibido novamente, caso contrário, o usuário é
                                             // deslogado e enviado para o loop externo
