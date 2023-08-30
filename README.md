@@ -6,6 +6,12 @@
     João Pedro de Oliveira Pauletti
     Henrique Carvalho Almeida
 
+## Organização do Repositório
+
+    docs/ - Documentação do projeto
+    src/ - Código fonte do projeto
+    scripts/ - Scripts de compilação e execução do projeto
+
 ## Descrição do Sistema
 
 Uma universidade pretende informatizar seu sistema de matrículas. A secretaria da universidade gera o currículo para cada semestre e mantém as informações sobre as disciplinas, professores e alunos.

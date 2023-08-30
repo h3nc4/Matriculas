@@ -1,8 +1,12 @@
 # Documentação do Projeto
 
-## Caso de uso
+## Diagrama de Classes
 
-![caso](./caso_de_uso.png)
+![diagrama](./Diagrama_de_classes.png)
+
+## Casos de uso
+
+![caso](./Casos_de_uso.png)
 
 ## Histórias de Usuários
 
