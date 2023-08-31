@@ -76,7 +76,7 @@ public class App {
      */
     public static String lerStr(String mensagem) {
         return System.console().readLine(mensagem).trim();
-    }
+    };
 
     /**
      * Método que lê um inteiro do console.
@@ -90,7 +90,7 @@ public class App {
         } catch (NumberFormatException e) {
             return lerInt(" ERRO: Valor invalido. Digite um numero inteiro: ");
         }
-    }
+    };
 
     /**
      * Limpa o console.
@@ -104,7 +104,7 @@ public class App {
         } catch (IOException | InterruptedException e) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
-    }
+    };
 
     /**
      * Retorna a hora do dia em que o programa está sendo executado.
@@ -117,7 +117,7 @@ public class App {
                 : hour < 18 ? "Boa tarde"
                         : "Boa Noite")
                 + ", bem vindo ao sistema de matriculas da PUCMG. (-1 para sair)\n Matricula: ";
-    }
+    };
 
     /**
      * Realiza o login do usuário.
@@ -136,7 +136,7 @@ public class App {
         if (usuarioAtual == null)
             System.out.println(" ERRO: Senha incorreta.");
         return Boolean.TRUE;
-    }
+    };
 
     /**
      * Cria e insere um novo aluno no mapa de usuários.
@@ -157,7 +157,7 @@ public class App {
                         curso //
                 ) //
         );
-    }
+    };
 
     /**
      * Cria e insere um novo professor no mapa de usuários.
@@ -170,7 +170,20 @@ public class App {
                         App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
                 ) //
         );
-    }
+    };
+
+    /**
+     * Cria e insere uma nova secretaria no mapa de usuários.
+     */
+    public static void novaSecretaria() {
+        App.usuarios.put(
+                App.proxMatricula,
+                new Secretaria(
+                        App.proxMatricula++,
+                        App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                ) //
+        );
+    };
 
     /**
      * Busca disciplinas digitadas pelo usuário no mapa de disciplinas.
@@ -187,7 +200,7 @@ public class App {
                                                              // o nome da disciplina para avisar o usuário
                     return add;
                 });
-    }
+    };
 
     /**
      * Cria e insere um novo curso no mapa de cursos.
@@ -218,7 +231,7 @@ public class App {
                         disciplinasIni //
                 ) //
         );
-    }
+    };
 
     /**
      * Cria e insere uma nova disciplina no mapa de disciplinas.
@@ -233,7 +246,7 @@ public class App {
                         App.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s") //
                 ) //
         );
-    }
+    };
 
     /**
      * Método principal do programa.

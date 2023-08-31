@@ -42,7 +42,7 @@ public class Professor extends Usuario {
      */
     public Professor(Integer matricula, String passwd) {
         super(matricula, passwd);
-    }
+    };
 
     /**
      * Adiciona uma disciplina ao professor
@@ -51,16 +51,16 @@ public class Professor extends Usuario {
      */
     public void addDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
-    }
+    };
 
     @Override
     public Boolean menu(){
         return true;
-    }
+    };
 
     @Override
     public String toString() {
         return "Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
-    }
+    };
 
 }

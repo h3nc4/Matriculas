@@ -31,7 +31,9 @@ import app.App;
 /**
  * Classe que representa um aluno
  * 
- * @see Usuario
+ * @see Usuario    };
+
+    /**
  */
 public class Aluno extends Usuario {
 
@@ -53,7 +55,7 @@ public class Aluno extends Usuario {
         super(matricula, passwd);
         this.curso = curso;
         this.disciplinas = this.curso.getDisciplinasIniciais();
-    }
+    };
 
     /**
      * Matricula o aluno em disciplinas
@@ -78,7 +80,7 @@ public class Aluno extends Usuario {
         }
         this.disciplinas = disciplinas;
         return true;
-    }
+    };
 
     /**
      * Desmatricula o aluno de disciplinas e o avisa quais foram desmatriculadas
@@ -94,7 +96,7 @@ public class Aluno extends Usuario {
                 }
             return true;
         }).toArray(String[]::new);
-    }
+    };
 
     @Override
     public Boolean menu() {
@@ -144,13 +146,13 @@ public class Aluno extends Usuario {
             return true;
         } else
             return false;
-    }
+    };
 
     @Override
     public String toString() {
         return "Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
                 + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
-    }
+    };
 
 }

@@ -19,7 +19,7 @@ public class Fabrica {
      */
     private Fabrica() {
 
-    }
+    };
 
     /**
      * Retorna a instância única desta classe.
@@ -30,6 +30,16 @@ public class Fabrica {
         if (instancia == null)
             instancia = new Fabrica();
         return instancia;
-    }
+    };
+
+    /**
+     * Lê um objeto de um arquivo.
+     * 
+     * @param nomeArquivo Nome do arquivo.
+     * @return Objeto lido do arquivo.
+     */
+    public Object lerObjeto(String nomeArquivo) {
+        return null;
+    };
         
 }

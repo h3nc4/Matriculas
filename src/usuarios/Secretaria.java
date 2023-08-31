@@ -40,7 +40,7 @@ public class Secretaria extends Usuario {
      */
     public Secretaria(Integer matricula, String passwd) {
         super(matricula, passwd);
-    }
+    };
 
     @Override
     public Boolean menu() {
@@ -66,11 +66,11 @@ public class Secretaria extends Usuario {
             }
         }
         return true;
-    }
+    };
 
     @Override
     public String toString() {
         return "Secretaria " + this.matricula;
-    }
+    };
 
 }

@@ -51,7 +51,7 @@ public class Curso implements java.io.Serializable {
         this.disciplinas = disciplinas;
         this.creditos = creditos;
         this.disciplinasIni = disciplinasIni;
-    }
+    };
 
     /**
      * Verifica se uma disciplina está no curso
@@ -62,20 +62,20 @@ public class Curso implements java.io.Serializable {
      */
     public Boolean estaNoCurso(String nome) {
         return this.disciplinas.containsKey(nome);
-    }
+    };
 
     @Override
     public String toString() {
         return "Curso " + this.NOME + ", de " + this.creditos + " creditos." + this.creditos + "\n Tem no total "
                 + this.disciplinas.size() + " disciplinas.";
-    } // @formatter:off
+    }; // @formatter:off
 
     /** Retorna as disciplinas iniciais do curso
      *  @return disciplinas iniciais do curso */
-    public Disciplina[] getDisciplinasIniciais() { return this.disciplinasIni; }
+    public Disciplina[] getDisciplinasIniciais() { return this.disciplinasIni; };
 
     /** Retorna o nome do curso
      *  @return nome do curso */
-    public String getNome() { return this.NOME; }
+    public String getNome() { return this.NOME; };
 
 }

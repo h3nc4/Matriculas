@@ -30,5 +30,5 @@ public class OperacaoNaoSuportadaException extends RuntimeException {
      */
     public OperacaoNaoSuportadaException() {
         super();
-    }
+    };
 }
