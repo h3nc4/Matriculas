@@ -50,6 +50,9 @@ public class Disciplina implements java.io.Serializable {
     /** numero minimo de alunos na disciplina */
     public static final Integer MIN_ALUNOS = 3;
 
+    /** serial version UID */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Construtor da classe Disciplina
      * 

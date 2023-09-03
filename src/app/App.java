@@ -86,7 +86,7 @@ public class App {
      * @param mensagem a ser exibida ao usuário.
      * @return inteiro lido do console.
      */
-    public static int lerInt(String mensagem) {
+    public static Integer lerInt(String mensagem) {
         try {
             return Integer.parseInt(App.lerStr(mensagem));
         } catch (NumberFormatException e) {
@@ -114,7 +114,7 @@ public class App {
      * @return hora do dia.
      */
     public static String saudacao() {
-        int hour = LocalTime.now().getHour();
+        Integer hour = LocalTime.now().getHour();
         return (hour >= 4 && hour < 12 ? "Bom dia"
                 : hour < 18 ? "Boa tarde"
                         : "Boa Noite")
@@ -127,7 +127,7 @@ public class App {
     public static Boolean login() {
         App.limparTerminal();
         try {
-            int user = App.lerInt(" " + App.saudacao());
+            Integer user = App.lerInt(" " + App.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
             App.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(App.lerStr(" Senha: ")));

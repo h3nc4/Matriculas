@@ -134,7 +134,7 @@ public class Aluno extends Usuario {
     public Boolean menu() {
         Integer escolha = App
                 .lerInt(" Bem vindo aluno " + this.matricula + "\n 1 - Matricular\n 2 - Desmatricular\n 0 - Sair\n ");
-        int q = 0;
+        Integer q = 0;
         if (escolha == 1) {
             System.out.println(
                     " Para matricular-se em uma disciplina, digite o nome desta, lembrando que sao permitidas no maximo 4 disciplinas obrigatorias e 2 disciplinas opcionais." //

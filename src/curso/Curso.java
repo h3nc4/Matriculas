@@ -46,7 +46,7 @@ public class Curso implements java.io.Serializable {
      * @param creditos       creditos do curso
      * @param disciplinasIni disciplinas iniciais do curso
      */
-    public Curso(String nome, HashMap<String, Disciplina> disciplinas, int creditos, Disciplina[] disciplinasIni) {
+    public Curso(String nome, HashMap<String, Disciplina> disciplinas, Integer creditos, Disciplina[] disciplinasIni) {
         this.NOME = nome;
         this.disciplinas = disciplinas;
         this.creditos = creditos;

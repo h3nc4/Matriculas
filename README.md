@@ -12,6 +12,10 @@
     src/ - Código fonte do projeto
     scripts/ - Scripts de compilação e execução do projeto
 
+## Sobre a implementação
+
+O projeto usa os padrões de projeto `Singleton` e `Fabrica` para implementar o sistema de matrículas.
+
 ## Descrição do Sistema
 
 Uma universidade pretende informatizar seu sistema de matrículas. A secretaria da universidade gera o currículo para cada semestre e mantém as informações sobre as disciplinas, professores e alunos.
