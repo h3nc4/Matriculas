@@ -251,20 +251,38 @@ public class App {
         );
     };
 
+    /**
+     * Imprime os alunos do mapa de usuários.
+     */
     public static void printAlunos() {
-        
+        App.usuarios.values().stream() // transforma o mapa de usuários em um stream
+                .filter(u -> u instanceof Aluno) // filtra os alunos
+                .forEach(System.out::println); // imprime os alunos
     };
 
+    /**
+     * Imprime os professores do mapa de usuários.
+     */
     public static void printProfessores() {
-        
+        App.usuarios.values().stream() // transforma o mapa de usuários em um stream
+                .filter(u -> u instanceof Professor) // filtra os professores
+                .forEach(System.out::println); // imprime os professores
     };
 
+    /**
+     * Imprime as disciplinas do mapa de disciplinas.
+     */
     public static void printDisciplinas() {
-        
+        App.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
+                .forEach(System.out::println); // imprime as disciplinas
     };
 
+    /**
+     * Imprime os cursos do mapa de cursos.
+     */
     public static void printCursos() {
-        
+        App.cursos.values().stream() // transforma o mapa de cursos em um stream
+                .forEach(System.out::println); // imprime os cursos
     };
 
     /**
