@@ -23,7 +23,6 @@ package usuarios;
 import java.util.List;
 
 import curso.Disciplina;
-import error.ChaveInvalidaException;
 import app.App;
 import app.Util;
 
@@ -61,6 +60,8 @@ public class Professor extends Usuario {
 
     /**
      * Retorna as disciplinas do professor em string
+     * 
+     * @return disciplinas do professor
      */
     public String buscarDisciplinas() {
         StringBuilder disciplinas = new StringBuilder();

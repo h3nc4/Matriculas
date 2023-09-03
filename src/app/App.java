@@ -67,6 +67,9 @@ public class App {
 
     /**
      * Realiza o login do usuário.
+     * 
+     * @return TRUE caso o login tenha sido mal sucedido, FALSE caso o usuário
+     *         deseje sair do programa.
      */
     public static Boolean login() {
         Util.limparTerminal();
@@ -231,6 +234,9 @@ public class App {
                 .forEach(System.out::println); // imprime os cursos
     };
 
+    /**
+     * Altera os dados de uma disciplina no mapa de disciplinas.
+     */
     public static void alterarDisciplina() {
         Disciplina disciplina = App.disciplinas.get(Util.lerStr(" Digite o nome da disciplina: ").toLowerCase());
         if (disciplina == null) {

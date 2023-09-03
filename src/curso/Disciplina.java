@@ -71,6 +71,7 @@ public class Disciplina implements java.io.Serializable {
     /**
      * Adiciona um aluno na disciplina.
      * 
+     * @throws DisciplinaCompletaException se a disciplina já estiver cheia.
      * @see Aluno#matricular(Disciplina[])
      */
     public void addAluno() throws DisciplinaCompletaException {

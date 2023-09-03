@@ -2,7 +2,7 @@
 
 ## Organização de pacotes
 
-    app -> O pacote "app" contém a classe principal App, que inicia a execução do sistema de matrícula.
+    app -> O pacote "app" contém a classe principal App, que inicia a execução do sistema de matrícula. Contém também a classe Util, que contém métodos utilitários para a execução do sistema. Além disso, contém a classe Fabrica, que é responsável por instanciar os objetos do sistema através do padrão de projeto Factory.
 
     curso -> O pacote "curso" contém as classes relacionadas a cursos e disciplinas, incluindo as classes Curso e Disciplina.
 
