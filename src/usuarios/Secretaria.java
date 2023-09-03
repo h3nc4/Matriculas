@@ -45,7 +45,7 @@ public class Secretaria extends Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = App.lerInt(
-                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Sair\n ");
+                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 5- Salvar\n 6- Carregar\n 0- Sair\n");
         switch (escolha) {
             case 1 -> App.novoAluno();
             case 2 -> App.novoProfessor();
@@ -60,6 +60,8 @@ public class Secretaria extends Usuario {
                     System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas iniciais.");
                 }
             }
+            case 5 -> App.escrever();
+            case 6 -> App.ler();
             case 0 -> {
                 System.out.println("Saindo...");
                 return false;

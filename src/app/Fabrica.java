@@ -1,5 +1,11 @@
 package app;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * Esta classe é responsável por ler e escrever objetos em arquivos.
  * 
@@ -11,7 +17,7 @@ package app;
  * @see java.io.ObjectInputStream
  */
 public class Fabrica {
-    private Fabrica instancia = null;
+    private static Fabrica instancia = null;
 
     /**
      * Construtor privado para garantir que apenas uma instância desta classe seja
@@ -26,7 +32,7 @@ public class Fabrica {
      * 
      * @return Instância única desta classe.
      */
-    public Fabrica getInstancia() {
+    public static Fabrica getInstancia() {
         if (instancia == null)
             instancia = new Fabrica();
         return instancia;
@@ -39,7 +45,33 @@ public class Fabrica {
      * @return Objeto lido do arquivo.
      */
     public Object lerObjeto(String nomeArquivo) {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("./data/" + nomeArquivo));
+            Object obj = in.readObject();
+            in.close();
+            return obj;
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo " + nomeArquivo);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erro ao buscar a classe do objeto no arquivo " + nomeArquivo);
+        }
         return null;
     };
-        
+
+    /**
+     * Escreve um objeto em um arquivo.
+     * 
+     * @param nomeArquivo Nome do arquivo.
+     * @param obj         Objeto a ser escrito no arquivo.
+     */
+    public void escreverObjeto(String nomeArquivo, Object obj) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("./data/" + nomeArquivo));
+            out.writeObject(obj);
+            out.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao escrever o arquivo " + nomeArquivo);
+        }
+    };
+
 }

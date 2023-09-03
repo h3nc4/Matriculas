@@ -146,8 +146,11 @@ public class App {
         Curso curso = null;
         while (curso == null) {
             curso = App.cursos.get(App.lerStr(" Curso: ").toLowerCase());
-            if (curso == null)
-                System.out.println(" ERRO: Curso invalido.");
+            if (curso == null) {
+                System.out.println(" ERRO: Curso invalido, deseja adicionar o curso antes? (s/n)");
+                if (App.lerStr(" ").equalsIgnoreCase("s"))
+                    App.novoCurso();
+            }
         }
         App.usuarios.put(
                 App.proxMatricula,
@@ -263,6 +266,30 @@ public class App {
                                             // deslogado e enviado para o loop externo
                 ;
         }
+    }
+
+    /**
+     * Escreve usuários, cursos e disciplinas em arquivos.
+     */
+    public static void escrever() {
+        Fabrica fabrica = Fabrica.getInstancia();
+
+        fabrica.escreverObjeto("usuarios.ser", usuarios);
+        fabrica.escreverObjeto("cursos.ser", cursos);
+        fabrica.escreverObjeto("disciplinas.ser", disciplinas);
+        fabrica.escreverObjeto("proxMatricula.ser", proxMatricula);
+    }
+
+    /**
+     * Lê usuários, cursos e disciplinas de arquivos.
+     */
+    public static void ler() {
+        Fabrica fabrica = Fabrica.getInstancia();
+
+        App.usuarios = (HashMap<Integer, Usuario>) fabrica.lerObjeto("usuarios.ser");
+        App.cursos = (HashMap<String, Curso>) fabrica.lerObjeto("cursos.ser");
+        App.disciplinas = (HashMap<String, Disciplina>) fabrica.lerObjeto("disciplinas.ser");
+        App.proxMatricula = (Integer) fabrica.lerObjeto("proxMatricula.ser");
     }
 
 }
