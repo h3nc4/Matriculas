@@ -70,7 +70,7 @@ public class Professor extends Usuario {
     };
 
     public void listarAlunos() {
-        Disciplina disciplina = App.getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
         if (disciplina != null) {
             System.out.println(disciplina.listarAlunos());
         }
@@ -80,7 +80,7 @@ public class Professor extends Usuario {
      * Inscreve o professor em uma disciplina
      */
     public void inscreverMateria() {
-        Disciplina disciplina = App.getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
         if (disciplina != null)
             this.disciplinas.add(disciplina);
         else

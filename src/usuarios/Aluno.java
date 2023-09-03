@@ -24,9 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import error.DisciplinaCompletaException;
+
 import curso.Curso;
 import curso.Disciplina;
-import error.DisciplinaCompletaException;
 import app.App;
 import app.Util;
 
@@ -64,64 +65,109 @@ public class Aluno extends Usuario {
      * Matricula o aluno em disciplinas e checa se as disciplinas são válidas
      * 
      * @param disciplinas disciplinas a serem matriculadas
-     * @return {@code TRUE} se o aluno foi matriculado em pelo menos uma disciplina
-     *         e {@code FALSE} caso contrário
      */
-    public Boolean matricular(Disciplina[] disciplinas) {
+    public void efetuarMatricula(Stream<Disciplina> disciplinasRem) {
 
-        // concatenar as disciplinas atuais com as novas
-        disciplinas = Stream.of(this.disciplinas, disciplinas).flatMap(Stream::of).toArray(Disciplina[]::new);
+        // concatenar as disciplinas atuais com as novas e unir em uma coleção
+        List<Disciplina> disciplinas = Stream.concat(Stream.of(this.disciplinas), disciplinasRem).toList();
 
-        try {
-            if (Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() == 0 // verificar se o aluno está
-                                                                                 // matriculado em
-                                                                                 // pelo menos uma disciplina
-                    || Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() > 4 // verificar se o aluno está
-                                                                                       // matriculado em no máximo 4
-                                                                                       // disciplinas obrigatórias
-                    || Stream.of(disciplinas).filter(d -> !d.eObrigatria()).count() > 2) { // verificar se o aluno está
-                                                                                           // matriculado em no máximo 2
-                                                                                           // disciplinas opcionais
-                System.out.println(
-                        " Erro ao realizar matricula, verifique se as disciplinas sao validas e se o total de cada disciplina esta correto" //
-                );
-                return false;
-            }
-    
-        } catch (NullPointerException e) { // caso o aluno não tenha sido matriculado em nenhuma disciplina
-            System.out.println(
-                    " Erro ao realizar matricula, verifique se as disciplinas sao validas e se o total de cada disciplina esta correto" //
-            );
-            return false;
-        }
+        if (disciplinas.stream().filter(d -> d.eObrigatria()).count() == 0 // verificar se o aluno está matriculado em
+                                                                           // pelo menos uma disciplina
+                || disciplinas.stream().filter(d -> d.eObrigatria()).count() > 4 // verificar se o aluno está
+                                                                                 // matriculado em no máximo 4
+                                                                                 // disciplinas obrigatórias
+                || disciplinas.stream().filter(d -> !d.eObrigatria()).count() > 2) // verificar se o aluno está
+                                                                                   // matriculado em no máximo 2
+                                                                                   // disciplinas opcionais
+            System.out.println( // caso alguma das condições seja verdadeira, o aluno não pode se matricular
+                    " Erro ao realizar matricula, verifique se as disciplinas sao validas e se o total de cada disciplina esta correto");
 
-        Stream.of(disciplinas).forEach(d -> {
+        disciplinas.forEach(d -> {
             try {
                 d.addAluno(this);
             } catch (DisciplinaCompletaException e) {
                 System.out.println(" Nao foi possivel matricular-se em " + d.getNome() + ": " + e.getMessage());
             }
         }); // adicionar o aluno em cada disciplina
-        this.disciplinas = disciplinas;
-        return true;
+        this.disciplinas = disciplinas.toArray(Disciplina[]::new);
     };
+
+    /**
+     * Menu para o aluno se matricular
+     * 
+     * @return {@code TRUE} para manter o aluno no menu
+     */
+    public Boolean matricular() {
+        Integer q = 0;
+        System.out.println(
+                " Para matricular-se em uma disciplina, digite o nome desta, lembrando que sao permitidas no maximo 4 disciplinas obrigatorias e 2 disciplinas opcionais." //
+        );
+        List<Disciplina> disciplinasRem = new LinkedList<>();
+        while (q <= 6) {
+            String nomeDisciplina = Util.lerStr(
+                    " Digite o nome de uma disciplina (digite 0 para sair): " //
+            );
+            if (nomeDisciplina.equals("0"))
+                break;
+            Disciplina disciplina = App.getApp().getDisciplina(nomeDisciplina);
+            if (disciplina == null && !this.curso.estaNoCurso(nomeDisciplina)) {
+                System.out.println(" Disciplina invalida");
+                continue;
+            }
+            System.out.println(" Disciplina adicionada");
+            disciplinasRem.add(disciplina);
+            q++;
+        }
+        this.efetuarMatricula(
+                disciplinasRem.stream() //
+        );
+        return true;
+    }
 
     /**
      * Desmatricula o aluno de disciplinas e o avisa quais foram desmatriculadas
      * 
      * @param disciplinas disciplinas a serem desmatriculadas
      */
-    public void desmatricular(String[] disciplinas) {
-        disciplinas = Stream.of(disciplinas).filter(d -> {
-            for (Disciplina disciplina : this.disciplinas)
-                if (disciplina.getNome().equals(d)) {
-                    System.out.println(" Desmatriculado de " + d);
-                    disciplina.removeAluno(this);
-                    return false;
-                }
-            return true;
-        }).toArray(String[]::new);
+    public void efetuarDesmatricula(Stream<Disciplina> disciplinas) {
+        disciplinas.forEach(d -> System.out.println(d.removeAluno(this) ? " Desmatriculado de " + d.getNome() : ""));
     };
+
+    /**
+     * Menu para o aluno se desmatricular
+     * 
+     * @return {@code TRUE} para manter o aluno no menu
+     */
+    public Boolean desmatricular() {
+        Integer q = 0;
+        System.out.println(
+                " Para desmatricular-se de uma disciplina, digite o nome desta, lembrando que sao permitidas no maximo 4 disciplinas obrigatorias e 2 disciplinas opcionais." //
+        );
+        List<Disciplina> disciplinasRem = new LinkedList<>();
+        while (q <= 6) {
+            String nomeDisciplina = Util.lerStr(
+                    " Digite o nome de uma disciplina (digite 0 para sair): " //
+            );
+            if (nomeDisciplina.equals("0"))
+                break;
+            Disciplina disciplina = App.getApp().getDisciplina(nomeDisciplina);
+            if (disciplina == null || Stream.of(this.disciplinas).filter(d -> d.equals(disciplina)).count() == 0) {
+                System.out.println(" Voce nao esta matriculado em " + nomeDisciplina);
+                continue;
+            } else {
+                System.out.println(" Disciplina removida");
+                this.disciplinas = Stream.of(this.disciplinas).filter(d -> !d.equals(disciplina))
+                        .toArray(Disciplina[]::new);
+                disciplinasRem.add(disciplina);
+                q++;
+            }
+
+        }
+        this.efetuarDesmatricula(
+                disciplinasRem.stream() //
+        );
+        return true;
+    }
 
     /**
      * Permitir que o aluno veja as disciplinas que ele está matriculado
@@ -133,52 +179,31 @@ public class Aluno extends Usuario {
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util
-                .lerInt(" Bem vindo aluno " + this.matricula + "\n 1 - Matricular\n 2 - Desmatricular\n 0 - Sair\n ");
-        Integer q = 0;
-        if (escolha == 1) {
-            System.out.println(
-                    " Para matricular-se em uma disciplina, digite o nome desta, lembrando que sao permitidas no maximo 4 disciplinas obrigatorias e 2 disciplinas opcionais." //
-            );
-            List<Disciplina> disciplinas = new LinkedList<>();
-            while (q <= 6) {
-                String nomeDisciplina = Util.lerStr(
-                        " Digite o nome de uma disciplina (digite 0 para sair): " //
-                );
-                if (nomeDisciplina.equals("0"))
-                    break;
-                Disciplina disciplina = App.getDisciplina(nomeDisciplina);
-                if (disciplina != null && this.curso.estaNoCurso(nomeDisciplina)) {
-                    System.out.println(" Disciplina adicionada");
-                    disciplinas.add(disciplina);
-                    q++;
-                } else
-                    System.out.println(" Disciplina invalida");
+        Integer escolha = Util.lerInt(" Bem vindo aluno " + this.matricula
+                + "\n 1 - Matricular\n 2 - Desmatricular\n 3- Ver suas disciplinas\n 0 - Sair\n ");
+        switch (escolha) {
+            case 1 -> {
+                if (App.getApp().matriculasAbertas())
+                    System.out.println(
+                            " Nao e possivel matricular-se agora, as matriculas estao fechadas, tente novamente mais tarde."
+                    );
+                return this.matricular();
             }
-            return this.matricular(
-                    disciplinas.stream().filter(d -> d != null).toArray(Disciplina[]::new) //
-            );
-        } else if (escolha == 2) {
-            System.out.println(
-                    " Para desmatricular-se de uma disciplina, digite o nome desta, lembrando que sao permitidas no maximo 4 disciplinas obrigatorias e 2 disciplinas opcionais." //
-            );
-            List<String> disciplinas = new LinkedList<>();
-            while (q <= 6) {
-                String nomeDisciplina = Util.lerStr(
-                        " Digite o nome de uma disciplina (digite 0 para sair): " //
-                );
-                if (nomeDisciplina.equals("0"))
-                    break;
-                System.out.println(" Disciplina adicionada");
-                disciplinas.add(nomeDisciplina);
-                q++;
+            case 2 -> {
+                if (App.getApp().matriculasAbertas())
+                    System.out.println(
+                            " Nao e possivel desmatricular-se agora, as matriculas estao fechadas, tente novamente mais tarde."
+                    );
+                return this.desmatricular();
             }
-            this.desmatricular(
-                    disciplinas.stream().filter(d -> d != null).toArray(String[]::new) //
-            );
-            return true;
-        } else
-            return false;
+            case 3 -> {
+                this.verDisciplinas();
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
     };
 
     @Override

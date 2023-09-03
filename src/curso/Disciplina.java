@@ -91,8 +91,8 @@ public class Disciplina implements java.io.Serializable {
      * 
      * @see Aluno#matricular(Disciplina[])
      */
-    public void removeAluno(Aluno aluno) {
-        this.alunos.remove(aluno);
+    public Boolean removeAluno(Aluno aluno) {
+        return this.alunos.remove(aluno);
     };
 
     public char[] listarAlunos() {

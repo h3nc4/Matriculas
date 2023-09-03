@@ -20,8 +20,6 @@
 
 package app;
 
-import java.io.IOException;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,30 +38,50 @@ import curso.Disciplina;
 /**
  * Classe principal do programa.
  */
-public class App {
+public class App implements java.io.Serializable {
+
+    /** Instância única da classe */
+    private static App instancia = null;
+
+    /** Matriculas abertas */
+    public Boolean matriculasAbertas;
 
     /** Matrícula atual */
-    private static Integer proxMatricula = 1;
+    private Integer proxMatricula;
 
     /** Usuário atual */
-    private static Optional<Usuario> usuarioAtual = null;
+    private Optional<Usuario> usuarioAtual;
 
     /** Mapa de usuários */
-    private static HashMap<Integer, Usuario> usuarios = new HashMap<>();
+    private HashMap<Integer, Usuario> usuarios;
 
     /** Mapa de cursos */
-    private static HashMap<String, Curso> cursos = new HashMap<>();
+    private HashMap<String, Curso> cursos;
 
-    /** Mapa de disciplinas */ //@formatter:off
-    private static HashMap<String, Disciplina> disciplinas = new HashMap<>();
+    /** Mapa de disciplinas */
+    private HashMap<String, Disciplina> disciplinas;
+
+    /** Padrão Singleton */
+    private App() {
+        this.matriculasAbertas = Boolean.FALSE;
+        this.proxMatricula = 1;
+        this.usuarioAtual = null;
+        this.usuarios = new HashMap<>();
+        this.cursos = new HashMap<>();
+        this.disciplinas = new HashMap<>();
+    }; // @formatter:off
+
+    /** Padrão Singleton */
+    public static App getApp() { if (App.instancia == null) App.instancia = new App(); return App.instancia; };
+
+    /** Retorna o estado das matrículas
+     * @return {@code TRUE} se as matrículas estão abertas ou {@code FALSE} caso estejam fechadas */
+    public Boolean matriculasAbertas() { return this.matriculasAbertas; };
 
     /** Busca uma disciplina
      * @param nome nome da disciplina
      * @return disciplina*/ 
-    public static Disciplina getDisciplina(String nome) { return disciplinas.get(nome); };
-
-    /** classe não instanciável */
-    private App() { throw new InstantiationError("Classe nao instanciavel"); }; // @formatter:on
+    public Disciplina getDisciplina(String nome) { return disciplinas.get(nome); }; // @formatter:on
 
     /**
      * Realiza o login do usuário.
@@ -71,13 +89,13 @@ public class App {
      * @return TRUE caso o login tenha sido mal sucedido, FALSE caso o usuário
      *         deseje sair do programa.
      */
-    public static Boolean login() {
+    public Boolean login() {
         Util.limparTerminal();
         try {
             Integer user = Util.lerInt(" " + Util.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            App.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
+            this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
 
         } catch (NullPointerException e) {
             System.out.println(" ERRO: Usuario nao existente.");
@@ -90,21 +108,21 @@ public class App {
     /**
      * Cria e insere um novo aluno no mapa de usuários.
      */
-    public static void novoAluno() {
-        String senha = Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ");
+    public void novoAluno() {
+        String senha = Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ");
         Curso curso = null;
         while (curso == null) {
-            curso = App.cursos.get(Util.lerStr(" Curso: ").toLowerCase());
+            curso = this.cursos.get(Util.lerStr(" Curso: ").toLowerCase());
             if (curso == null) {
                 System.out.println(" ERRO: Curso invalido, deseja adicionar o curso antes? (s/n)");
                 if (Util.lerStr(" ").equalsIgnoreCase("s"))
-                    App.novoCurso();
+                    this.novoCurso();
             }
         }
-        App.usuarios.put(
-                App.proxMatricula,
+        this.usuarios.put(
+                this.proxMatricula,
                 new Aluno(
-                        App.proxMatricula++,
+                        this.proxMatricula++,
                         senha,
                         curso //
                 ) //
@@ -114,12 +132,12 @@ public class App {
     /**
      * Cria e insere um novo professor no mapa de usuários.
      */
-    public static void novoProfessor() {
-        App.usuarios.put(
-                App.proxMatricula,
+    public void novoProfessor() {
+        this.usuarios.put(
+                this.proxMatricula,
                 new Professor(
-                        App.proxMatricula++,
-                        Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                        this.proxMatricula++,
+                        Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ") //
                 ) //
         );
     };
@@ -127,12 +145,12 @@ public class App {
     /**
      * Cria e insere uma nova secretaria no mapa de usuários.
      */
-    public static void novaSecretaria() {
-        App.usuarios.put(
-                App.proxMatricula,
+    public void novaSecretaria() {
+        this.usuarios.put(
+                this.proxMatricula,
                 new Secretaria(
-                        App.proxMatricula++,
-                        Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                        this.proxMatricula++,
+                        Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ") //
                 ) //
         );
     };
@@ -143,10 +161,10 @@ public class App {
      * @param mensagem a ser exibida ao usuário.
      * @return stream de disciplinas de acordo com o que o usuário digitou.
      */
-    private static Stream<Disciplina> buscaDisciplinas(String mensagem) {
+    private Stream<Disciplina> buscaDisciplinas(String mensagem) {
         return Stream.of(Util.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
-                    Disciplina add = App.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
+                    Disciplina add = this.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
                     if (add == null)
                         throw new ChaveInvalidaException(d); // caso a disciplina não exista, lança uma exceção passando
                                                              // o nome da disciplina para avisar o usuário
@@ -157,16 +175,16 @@ public class App {
     /**
      * Cria e insere um novo curso no mapa de cursos.
      */
-    public static void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
+    public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
-        HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) App
+        HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) this
                 .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula: ")
                 .collect(
                         Collectors.toMap(d -> d.getNome(), d -> d) //
                 ); // transforma o stream em um mapa e o retorna para a variável disciplinasC
 
-        Disciplina[] disciplinasIni = App
+        Disciplina[] disciplinasIni = this
                 .buscaDisciplinas(" Digite as 4 disciplinas iniciais do curso separadas por virgula: ")
                 .collect(Collectors.toList()) // transforma o stream em uma lista
                 .toArray(Disciplina[]::new); // transforma a lista em um array
@@ -174,7 +192,7 @@ public class App {
         if (disciplinasIni.length != 4) // caso não tenham sido adicionadas 4 disciplinas, lança uma exceção
             throw new OperacaoNaoSuportadaException();
 
-        App.cursos.put(
+        this.cursos.put(
                 nome,
                 new Curso(
                         nome,
@@ -188,9 +206,9 @@ public class App {
     /**
      * Cria e insere uma nova disciplina no mapa de disciplinas.
      */
-    public static void novaDisciplina() {
+    public void novaDisciplina() {
         String nome = Util.lerStr(" Nome: ").toLowerCase();
-        App.disciplinas.put(
+        this.disciplinas.put(
                 nome,
                 new Disciplina(
                         nome,
@@ -203,8 +221,8 @@ public class App {
     /**
      * Imprime os alunos do mapa de usuários.
      */
-    public static void printAlunos() {
-        App.usuarios.values().stream() // transforma o mapa de usuários em um stream
+    public void printAlunos() {
+        this.usuarios.values().stream() // transforma o mapa de usuários em um stream
                 .filter(u -> u instanceof Aluno) // filtra os alunos
                 .forEach(System.out::println); // imprime os alunos
     };
@@ -212,8 +230,8 @@ public class App {
     /**
      * Imprime os professores do mapa de usuários.
      */
-    public static void printProfessores() {
-        App.usuarios.values().stream() // transforma o mapa de usuários em um stream
+    public void printProfessores() {
+        this.usuarios.values().stream() // transforma o mapa de usuários em um stream
                 .filter(u -> u instanceof Professor) // filtra os professores
                 .forEach(System.out::println); // imprime os professores
     };
@@ -221,24 +239,24 @@ public class App {
     /**
      * Imprime as disciplinas do mapa de disciplinas.
      */
-    public static void printDisciplinas() {
-        App.disciplinas.values() // transforma o mapa de disciplinas em uma coleção
+    public void printDisciplinas() {
+        this.disciplinas.values() // transforma o mapa de disciplinas em uma coleção
                 .forEach(System.out::println); // imprime as disciplinas
     };
 
     /**
      * Imprime os cursos do mapa de cursos.
      */
-    public static void printCursos() {
-        App.cursos.values() // transforma o mapa de cursos em uma coleção
+    public void printCursos() {
+        this.cursos.values() // transforma o mapa de cursos em uma coleção
                 .forEach(System.out::println); // imprime os cursos
     };
 
     /**
      * Altera os dados de uma disciplina no mapa de disciplinas.
      */
-    public static void alterarDisciplina() {
-        Disciplina disciplina = App.disciplinas.get(Util.lerStr(" Digite o nome da disciplina: ").toLowerCase());
+    public void alterarDisciplina() {
+        Disciplina disciplina = this.disciplinas.get(Util.lerStr(" Digite o nome da disciplina: ").toLowerCase());
         if (disciplina == null) {
             System.out.println(" ERRO: Disciplina nao existente.");
             return;
@@ -254,12 +272,13 @@ public class App {
      * @throws Throwable caso ocorra algum erro.
      */
     public static void main(String[] args) throws Throwable {
-        App.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
+        App app = App.getApp();
+        app.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
-        while (App.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
-            while (App.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
-                                                  // TRUE, o menu é exibido novamente, caso contrário, o usuário é
-                                                  // deslogado e enviado para o loop externo
+        while (app.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
+            while (app.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
+                                                   // TRUE, o menu é exibido novamente, caso contrário, o usuário é
+                                                   // deslogado e enviado para o loop externo
                 ;
         }
     };
@@ -267,26 +286,20 @@ public class App {
     /**
      * Escreve usuários, cursos e disciplinas em arquivos.
      */
-    public static void escrever() {
+    public void escrever() {
         Fabrica fabrica = Fabrica.getInstancia();
 
-        fabrica.escreverObjeto("usuarios.ser", usuarios);
-        fabrica.escreverObjeto("cursos.ser", cursos);
-        fabrica.escreverObjeto("disciplinas.ser", disciplinas);
-        fabrica.escreverObjeto("proxMatricula.ser", proxMatricula);
+        this.usuarioAtual = Optional.empty();
+        fabrica.escreverObjeto("sistema.ser", this);
     };
 
     /**
      * Lê usuários, cursos e disciplinas de arquivos.
      */
-    @SuppressWarnings(value = "unchecked")
     public static void ler() {
         Fabrica fabrica = Fabrica.getInstancia();
 
-        App.usuarios = (HashMap<Integer, Usuario>) fabrica.lerObjeto("usuarios.ser");
-        App.cursos = (HashMap<String, Curso>) fabrica.lerObjeto("cursos.ser");
-        App.disciplinas = (HashMap<String, Disciplina>) fabrica.lerObjeto("disciplinas.ser");
-        App.proxMatricula = (Integer) fabrica.lerObjeto("proxMatricula.ser");
+        App.instancia = (App) fabrica.lerObjeto("sistema.ser");
     };
 
 }

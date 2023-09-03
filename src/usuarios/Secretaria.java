@@ -53,12 +53,12 @@ public class Secretaria extends Usuario {
         Integer escolha = Util.lerInt(
                 " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n");
         switch (escolha) {
-            case 1 -> App.novoAluno();
-            case 2 -> App.novoProfessor();
-            case 3 -> App.novaDisciplina();
+            case 1 -> App.getApp().novoAluno();
+            case 2 -> App.getApp().novoProfessor();
+            case 3 -> App.getApp().novaDisciplina();
             case 4 -> {
                 try {
-                    App.novoCurso();
+                    App.getApp().novoCurso();
                 } catch (ChaveInvalidaException e) {
                     System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
                             + "\", adicione esta disciplina ao sistema antes de criar um curso.");
@@ -74,24 +74,24 @@ public class Secretaria extends Usuario {
      */
     public void menuLeitura() {
         Integer escolha = Util
-                .lerInt(" 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
+                .lerInt(" 1- Imprimir Alunos\n 2- Imprimir Professores\n 3- Imprimir Disciplinas\n 4- Imprimir Cursos\n 0- Voltar\n");
         switch (escolha) {
-            case 1 -> App.printAlunos();
-            case 2 -> App.printProfessores();
-            case 3 -> App.printDisciplinas();
-            case 4 -> App.printCursos();
+            case 1 -> App.getApp().printAlunos();
+            case 2 -> App.getApp().printProfessores();
+            case 3 -> App.getApp().printDisciplinas();
+            case 4 -> App.getApp().printCursos();
         }
     };
 
     @Override
     public Boolean menu() {
         Integer escolha = Util.lerInt(
-                " 1- Cadastrar no sistema\n 2- Ver no sistema 3- Alterar Disciplina 4- Salvar\n 5- Carregar\n 0- Logoff\n ");
+                " 1- Cadastrar no sistema\n 2- Imprimir curriculos 3- Alterar Disciplina 4- Salvar\n 5- Carregar\n 0- Logoff\n ");
         switch (escolha) {
             case 1 -> this.menuCadastro();
             case 2 -> this.menuLeitura();
-            case 3 -> App.alterarDisciplina();
-            case 4 -> App.escrever();
+            case 3 -> App.getApp().alterarDisciplina();
+            case 4 -> App.getApp().escrever();
             case 5 -> App.ler();
             case 0 -> {
                 System.out.println("Saindo...");

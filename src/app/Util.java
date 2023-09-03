@@ -31,8 +31,7 @@ public class Util {
     /**
      * Construtor privado para evitar instanciação.
      */
-    private Util() {
-    };
+    private Util() {};
     
     /**
      * Método que lê uma string do console através do {@link System#console()}.
