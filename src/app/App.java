@@ -251,6 +251,22 @@ public class App {
         );
     };
 
+    public static void printAlunos() {
+        
+    };
+
+    public static void printProfessores() {
+        
+    };
+
+    public static void printDisciplinas() {
+        
+    };
+
+    public static void printCursos() {
+        
+    };
+
     /**
      * Método principal do programa.
      * 
@@ -283,6 +299,7 @@ public class App {
     /**
      * Lê usuários, cursos e disciplinas de arquivos.
      */
+    @SuppressWarnings (value="unchecked")
     public static void ler() {
         Fabrica fabrica = Fabrica.getInstancia();
 

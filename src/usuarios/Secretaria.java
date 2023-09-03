@@ -42,10 +42,9 @@ public class Secretaria extends Usuario {
         super(matricula, passwd);
     };
 
-    @Override
-    public Boolean menu() {
+    public void menuCadastro() {
         Integer escolha = App.lerInt(
-                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 5- Salvar\n 6- Carregar\n 0- Sair\n");
+                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> App.novoAluno();
             case 2 -> App.novoProfessor();
@@ -60,8 +59,29 @@ public class Secretaria extends Usuario {
                     System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas iniciais.");
                 }
             }
-            case 5 -> App.escrever();
-            case 6 -> App.ler();
+        }
+    };
+
+    public void menuPrint() {
+        Integer escolha = App.lerInt(
+                " 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
+        switch (escolha) {
+            case 1 -> App.printAlunos();
+            case 2 -> App.printProfessores();
+            case 3 -> App.printDisciplinas();
+            case 4 -> App.printCursos();
+        }
+    };
+
+    @Override
+    public Boolean menu() {
+        Integer escolha = App.lerInt(
+                " 1- Cadastrar no sistema\n 2- Ver no sistema 3- Salvar\n 4- Carregar\n 0- Logoff\n");
+        switch (escolha) {
+            case 1 -> this.menuCadastro();
+            case 2 -> this.menuPrint();
+            case 3 -> App.escrever();
+            case 4 -> App.ler();
             case 0 -> {
                 System.out.println("Saindo...");
                 return false;
