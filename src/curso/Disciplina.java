@@ -20,6 +20,9 @@
 
 package curso;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import error.DisciplinaCompletaException;
 
 import usuarios.Aluno;
@@ -38,8 +41,8 @@ public class Disciplina implements java.io.Serializable {
     /** creditos da disciplina */
     private Integer creditos;
 
-    /** quantidade de alunos na disciplina */
-    private Integer qtdAlunos;
+    /** alunos na disciplina */
+    List<Aluno> alunos;
 
     /** nome da disciplina */
     private final String NOME;
@@ -64,8 +67,8 @@ public class Disciplina implements java.io.Serializable {
         this.NOME = nome;
         this.creditos = creditos;
         this.opcional = opcional;
-        this.qtdAlunos = 0;
         this.estaAtiva = Boolean.FALSE;
+        this.alunos = new LinkedList<Aluno>();
     };
 
     /**
@@ -74,11 +77,13 @@ public class Disciplina implements java.io.Serializable {
      * @throws DisciplinaCompletaException se a disciplina já estiver cheia.
      * @see Aluno#matricular(Disciplina[])
      */
-    public void addAluno() throws DisciplinaCompletaException {
-        if (++this.qtdAlunos > MAX_ALUNOS) {
-            this.qtdAlunos--;
+    public void addAluno(Aluno novoAluno) throws DisciplinaCompletaException {
+        if (this.alunos.size() >= MAX_ALUNOS) 
             throw new DisciplinaCompletaException("Numero maximo de alunos atingido na disciplina " + this.NOME + ".");
-        }
+        this.alunos.add(novoAluno);
+        if (!this.estaAtiva && this.alunos.size() >= MIN_ALUNOS)
+            this.estaAtiva = Boolean.TRUE;
+
     };
 
     /**
@@ -86,14 +91,18 @@ public class Disciplina implements java.io.Serializable {
      * 
      * @see Aluno#matricular(Disciplina[])
      */
-    public void removeAluno() {
-        this.qtdAlunos--;
+    public void removeAluno(Aluno aluno) {
+        this.alunos.remove(aluno);
+    };
+
+    public char[] listarAlunos() {
+        return null;
     };
 
     @Override
     public String toString() {
         return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
-                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha " + this.qtdAlunos
+                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha " + this.alunos.size()
                 + " alunos matriculados atualmente.";
     }; //@formatter:off
 
@@ -111,6 +120,6 @@ public class Disciplina implements java.io.Serializable {
 
     /** Altera o total de creditos
      * @param creditos novo valor */
-    public void setCreditos(int creditos) { this.creditos = creditos; };
+    public void setCreditos(int creditos) { this.creditos = creditos; }
 
 }

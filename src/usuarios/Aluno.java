@@ -97,7 +97,7 @@ public class Aluno extends Usuario {
 
         Stream.of(disciplinas).forEach(d -> {
             try {
-                d.addAluno();
+                d.addAluno(this);
             } catch (DisciplinaCompletaException e) {
                 System.out.println(" Nao foi possivel matricular-se em " + d.getNome() + ": " + e.getMessage());
             }
@@ -116,7 +116,7 @@ public class Aluno extends Usuario {
             for (Disciplina disciplina : this.disciplinas)
                 if (disciplina.getNome().equals(d)) {
                     System.out.println(" Desmatriculado de " + d);
-                    disciplina.removeAluno();
+                    disciplina.removeAluno(this);
                     return false;
                 }
             return true;
