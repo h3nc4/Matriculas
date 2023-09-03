@@ -23,7 +23,9 @@ package usuarios;
 import java.util.List;
 
 import curso.Disciplina;
+import error.ChaveInvalidaException;
 import app.App;
+import app.Util;
 
 /**
  * Classe que representa um professor
@@ -53,7 +55,7 @@ public class Professor extends Usuario {
      * 
      * @param disciplina disciplina a ser adicionada
      */
-    public void addDisciplina(Disciplina disciplina) {
+    public void inserirDisciplina(Disciplina disciplina) {
         this.disciplinas.add(disciplina);
     };
 
@@ -66,9 +68,16 @@ public class Professor extends Usuario {
         return new String(disciplinas);
     };
 
+    /**
+     * Inscreve o professor em uma disciplina
+     */
+    public void inscreverMateria(){
+        this.disciplinas.add(App.getDisciplina(Util.lerStr("Digite o nome da disciplina: ")));
+    }
+
     @Override
     public Boolean menu() {
-        Integer escolha = App.lerInt(" 1- Buscar disciplinas\n 0- Voltar\n");
+        Integer escolha = Util.lerInt(" 1- Buscar disciplinas\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> System.out.println(this.buscarDisciplinas());
             case 0 -> {

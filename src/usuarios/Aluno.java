@@ -28,6 +28,7 @@ import curso.Curso;
 import curso.Disciplina;
 import error.DisciplinaCompletaException;
 import app.App;
+import app.Util;
 
 /**
  * Classe que representa um aluno
@@ -132,7 +133,7 @@ public class Aluno extends Usuario {
 
     @Override
     public Boolean menu() {
-        Integer escolha = App
+        Integer escolha = Util
                 .lerInt(" Bem vindo aluno " + this.matricula + "\n 1 - Matricular\n 2 - Desmatricular\n 0 - Sair\n ");
         Integer q = 0;
         if (escolha == 1) {
@@ -141,7 +142,7 @@ public class Aluno extends Usuario {
             );
             List<Disciplina> disciplinas = new LinkedList<>();
             while (q <= 6) {
-                String nomeDisciplina = App.lerStr(
+                String nomeDisciplina = Util.lerStr(
                         " Digite o nome de uma disciplina (digite 0 para sair): " //
                 );
                 if (nomeDisciplina.equals("0"))
@@ -163,7 +164,7 @@ public class Aluno extends Usuario {
             );
             List<String> disciplinas = new LinkedList<>();
             while (q <= 6) {
-                String nomeDisciplina = App.lerStr(
+                String nomeDisciplina = Util.lerStr(
                         " Digite o nome de uma disciplina (digite 0 para sair): " //
                 );
                 if (nomeDisciplina.equals("0"))

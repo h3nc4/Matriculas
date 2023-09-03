@@ -14,7 +14,7 @@
 
 ## Sobre a implementação
 
-O projeto usa os padrões de projeto `Singleton` e `Fabrica` para implementar o sistema de matrículas.
+O projeto usa os padrões de projeto `Singleton` e `Factory` para implementar o sistema de matrículas.
 
 ## Descrição do Sistema
 

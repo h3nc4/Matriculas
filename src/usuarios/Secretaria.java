@@ -24,6 +24,7 @@ import error.ChaveInvalidaException;
 import error.OperacaoNaoSuportadaException;
 
 import app.App;
+import app.Util;
 
 /**
  * Classe que representa uma secretaria
@@ -49,7 +50,7 @@ public class Secretaria extends Usuario {
      * Menu de cadastro dos itens no sistema
      */
     public void menuCadastro() {
-        Integer escolha = App.lerInt(
+        Integer escolha = Util.lerInt(
                 " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> App.novoAluno();
@@ -72,7 +73,7 @@ public class Secretaria extends Usuario {
      * Menu de impressão dos itens no sistema
      */
     public void menuLeitura() {
-        Integer escolha = App
+        Integer escolha = Util
                 .lerInt(" 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> App.printAlunos();
@@ -84,7 +85,7 @@ public class Secretaria extends Usuario {
 
     @Override
     public Boolean menu() {
-        Integer escolha = App.lerInt(
+        Integer escolha = Util.lerInt(
                 " 1- Cadastrar no sistema\n 2- Ver no sistema 3- Alterar Disciplina 4- Salvar\n 5- Carregar\n 0- Logoff\n ");
         switch (escolha) {
             case 1 -> this.menuCadastro();

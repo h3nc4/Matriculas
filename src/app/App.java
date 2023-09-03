@@ -57,11 +57,6 @@ public class App {
     /** Mapa de disciplinas */ //@formatter:off
     private static HashMap<String, Disciplina> disciplinas = new HashMap<>();
 
-    /** Retorna um curso
-     * @param nome nome do curso
-     * @return curso*/
-    public static Curso getCurso(String nome) { return cursos.get(nome); };
-
     /** Busca uma disciplina
      * @param nome nome da disciplina
      * @return disciplina*/ 
@@ -71,66 +66,15 @@ public class App {
     private App() { throw new InstantiationError("Classe nao instanciavel"); }; // @formatter:on
 
     /**
-     * Método que lê uma string do console através do {@link System#console()}.
-     * 
-     * @param mensagem a ser exibida ao usuário.
-     * @return string lida do console.
-     */
-    public static String lerStr(String mensagem) {
-        return System.console().readLine(mensagem).trim();
-    };
-
-    /**
-     * Método que lê um inteiro do console.
-     * 
-     * @param mensagem a ser exibida ao usuário.
-     * @return inteiro lido do console.
-     */
-    public static Integer lerInt(String mensagem) {
-        try {
-            return Integer.parseInt(App.lerStr(mensagem));
-        } catch (NumberFormatException e) {
-            return lerInt(" ERRO: Valor invalido. Digite um numero inteiro: ");
-        }
-    };
-
-    /**
-     * Limpa o console.
-     */
-    public static void limparTerminal() {
-        try {
-            new ProcessBuilder(System.getProperty("os.name").toLowerCase().contains("win") ? "cls" : "clear")
-                    .inheritIO()
-                    .start()
-                    .waitFor();
-        } catch (IOException | InterruptedException e) {
-            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        }
-    };
-
-    /**
-     * Retorna a hora do dia em que o programa está sendo executado.
-     * 
-     * @return hora do dia.
-     */
-    public static String saudacao() {
-        Integer hour = LocalTime.now().getHour();
-        return (hour >= 4 && hour < 12 ? "Bom dia"
-                : hour < 18 ? "Boa tarde"
-                        : "Boa Noite")
-                + ", bem vindo ao sistema de matriculas da PUCMG. (-1 para sair)\n Matricula: ";
-    };
-
-    /**
      * Realiza o login do usuário.
      */
     public static Boolean login() {
-        App.limparTerminal();
+        Util.limparTerminal();
         try {
-            Integer user = App.lerInt(" " + App.saudacao());
+            Integer user = Util.lerInt(" " + Util.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            App.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(App.lerStr(" Senha: ")));
+            App.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
 
         } catch (NullPointerException e) {
             System.out.println(" ERRO: Usuario nao existente.");
@@ -144,13 +88,13 @@ public class App {
      * Cria e insere um novo aluno no mapa de usuários.
      */
     public static void novoAluno() {
-        String senha = App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ");
+        String senha = Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ");
         Curso curso = null;
         while (curso == null) {
-            curso = App.cursos.get(App.lerStr(" Curso: ").toLowerCase());
+            curso = App.cursos.get(Util.lerStr(" Curso: ").toLowerCase());
             if (curso == null) {
                 System.out.println(" ERRO: Curso invalido, deseja adicionar o curso antes? (s/n)");
-                if (App.lerStr(" ").equalsIgnoreCase("s"))
+                if (Util.lerStr(" ").equalsIgnoreCase("s"))
                     App.novoCurso();
             }
         }
@@ -172,7 +116,7 @@ public class App {
                 App.proxMatricula,
                 new Professor(
                         App.proxMatricula++,
-                        App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                        Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
                 ) //
         );
     };
@@ -185,7 +129,7 @@ public class App {
                 App.proxMatricula,
                 new Secretaria(
                         App.proxMatricula++,
-                        App.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
+                        Util.lerStr(" Matricula: " + App.proxMatricula + "\n Senha: ") //
                 ) //
         );
     };
@@ -197,7 +141,7 @@ public class App {
      * @return stream de disciplinas de acordo com o que o usuário digitou.
      */
     private static Stream<Disciplina> buscaDisciplinas(String mensagem) {
-        return Stream.of(App.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
+        return Stream.of(Util.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
                     Disciplina add = App.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
                     if (add == null)
@@ -211,7 +155,7 @@ public class App {
      * Cria e insere um novo curso no mapa de cursos.
      */
     public static void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
-        String nome = App.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
+        String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
         HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) App
                 .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula: ")
@@ -232,7 +176,7 @@ public class App {
                 new Curso(
                         nome,
                         disciplinasC,
-                        App.lerInt(" Creditos: "),
+                        Util.lerInt(" Creditos: "),
                         disciplinasIni //
                 ) //
         );
@@ -242,13 +186,13 @@ public class App {
      * Cria e insere uma nova disciplina no mapa de disciplinas.
      */
     public static void novaDisciplina() {
-        String nome = App.lerStr(" Nome: ").toLowerCase();
+        String nome = Util.lerStr(" Nome: ").toLowerCase();
         App.disciplinas.put(
                 nome,
                 new Disciplina(
                         nome,
-                        App.lerInt(" Creditos: "),
-                        App.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s") //
+                        Util.lerInt(" Creditos: "),
+                        Util.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s") //
                 ) //
         );
     };
@@ -288,13 +232,13 @@ public class App {
     };
 
     public static void alterarDisciplina() {
-        Disciplina disciplina = App.disciplinas.get(App.lerStr(" Digite o nome da disciplina: ").toLowerCase());
+        Disciplina disciplina = App.disciplinas.get(Util.lerStr(" Digite o nome da disciplina: ").toLowerCase());
         if (disciplina == null) {
             System.out.println(" ERRO: Disciplina nao existente.");
             return;
         }
-        disciplina.setOpcional(App.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s"));
-        disciplina.setCreditos(App.lerInt(" Creditos: "));
+        disciplina.setOpcional(Util.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s"));
+        disciplina.setCreditos(Util.lerInt(" Creditos: "));
     };
 
     /**
