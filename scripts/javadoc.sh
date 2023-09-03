@@ -1,5 +1,5 @@
 # Gerar a documentação do projeto
-javadoc -d web -sourcepath src/ src/*/*.java
+javadoc -d javadoc -sourcepath src/ src/*/*.java
 
 # Mudar branch para web
 git checkout web

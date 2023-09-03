@@ -22,10 +22,12 @@ package curso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import error.DisciplinaCompletaException;
 
 import usuarios.Aluno;
+import usuarios.Professor;
 
 /**
  * Classe que representa uma disciplina
@@ -37,6 +39,9 @@ public class Disciplina implements java.io.Serializable {
 
     /** disciplina está ativa */
     private Boolean estaAtiva;
+
+    /** professor da disciplina */
+    private Optional<Professor> professor;
 
     /** creditos da disciplina */
     private Integer creditos;
@@ -67,6 +72,7 @@ public class Disciplina implements java.io.Serializable {
         this.NOME = nome;
         this.creditos = creditos;
         this.opcional = opcional;
+        this.professor = Optional.empty();
         this.estaAtiva = Boolean.FALSE;
         this.alunos = new LinkedList<Aluno>();
     };
@@ -75,34 +81,53 @@ public class Disciplina implements java.io.Serializable {
      * Adiciona um aluno na disciplina.
      * 
      * @throws DisciplinaCompletaException se a disciplina já estiver cheia.
-     * @see Aluno#matricular(Disciplina[])
+     * @param novoAluno aluno a ser adicionado
+     * @see Aluno#matricular()
      */
     public void addAluno(Aluno novoAluno) throws DisciplinaCompletaException {
-        if (this.alunos.size() >= MAX_ALUNOS) 
+        if (this.alunos.size() >= MAX_ALUNOS)
             throw new DisciplinaCompletaException("Numero maximo de alunos atingido na disciplina " + this.NOME + ".");
         this.alunos.add(novoAluno);
         if (!this.estaAtiva && this.alunos.size() >= MIN_ALUNOS)
             this.estaAtiva = Boolean.TRUE;
+    };
 
+    /**
+     * Adiciona um professor na disciplina.
+     * 
+     * @param professor professor a ser adicionado
+     */
+    public void addProfessor(Professor professor) {
+        this.professor = Optional.of(professor);
     };
 
     /**
      * Remove um aluno na disciplina.
      * 
-     * @see Aluno#matricular(Disciplina[])
+     * @param aluno aluno a ser removido
+     * @see Aluno#matricular()
+     * @return {@code TRUE} se o aluno foi removido, {@code FALSE} caso contrário.
      */
     public Boolean removeAluno(Aluno aluno) {
         return this.alunos.remove(aluno);
     };
 
-    public char[] listarAlunos() {
-        return null;
+    /**
+     * Lista todos os alunos da disciplina.
+     * 
+     * @return alunos da disciplina em string
+     */
+    public String listarAlunos() {
+        StringBuilder alunos = new StringBuilder();
+        this.alunos.forEach(aluno -> alunos.append(aluno.getInfo() + "\n"));
+        return new String(alunos);
     };
 
     @Override
     public String toString() {
         return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
-                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha " + this.alunos.size()
+                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha "
+                + this.alunos.size()
                 + " alunos matriculados atualmente.";
     }; //@formatter:off
 
@@ -120,6 +145,10 @@ public class Disciplina implements java.io.Serializable {
 
     /** Altera o total de creditos
      * @param creditos novo valor */
-    public void setCreditos(int creditos) { this.creditos = creditos; }
+    public void setCreditos(int creditos) { this.creditos = creditos; };
+
+    /** Retorna se há um professor na disciplina
+     * @return se há um professor na disciplina */
+    public boolean temProfessor() { return this.professor.isPresent(); };
 
 }

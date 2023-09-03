@@ -86,13 +86,19 @@ public class Secretaria extends Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = Util.lerInt(
-                " 1- Cadastrar no sistema\n 2- Imprimir curriculos 3- Alterar Disciplina 4- Salvar\n 5- Carregar\n 0- Logoff\n ");
+                " 1- Cadastrar no sistema\n 2- Imprimir curriculos 3- Alterar Disciplina 4- Abrir/Fechar matriculas\n 5- Salvar\n 6- Carregar\n 0- Logoff\n ");
         switch (escolha) {
             case 1 -> this.menuCadastro();
             case 2 -> this.menuLeitura();
             case 3 -> App.getApp().alterarDisciplina();
-            case 4 -> App.getApp().escrever();
-            case 5 -> App.ler();
+            case 4 -> {
+                if (Util.lerStr("Deseja abrir ou fechar as matriculas? (abrir/fechar)").equalsIgnoreCase("abrir"))
+                    App.getApp().abrirMatriculas();
+                else
+                    App.getApp().fecharMatriculas();
+            }
+            case 5 -> App.getApp().escrever();
+            case 6 -> App.ler();
             case 0 -> {
                 System.out.println("Saindo...");
                 return false;

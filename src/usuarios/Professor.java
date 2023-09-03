@@ -69,31 +69,40 @@ public class Professor extends Usuario {
         return new String(disciplinas);
     };
 
+    /**
+     * Lista as disciplinas disponíveis para o professor
+     */
+    public void listarDisciplinas() {
+        System.out.println(App.getApp().listarDisciplinas());
+    };
+
+    /**
+     * Lista os alunos de uma disciplina
+     */
     public void listarAlunos() {
-        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
-        if (disciplina != null) {
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr(" Digite o nome da disciplina: "));
+        if (disciplina != null)
             System.out.println(disciplina.listarAlunos());
-        }
     };
 
     /**
      * Inscreve o professor em uma disciplina
      */
     public void inscreverMateria() {
-        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr(" Digite o nome da disciplina: "));
         if (disciplina != null)
             this.disciplinas.add(disciplina);
         else
-            System.out.println("Disciplina não encontrada");
-
-    }
+            System.out.println(" Disciplina não encontrada");
+    };
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util.lerInt(" 1- Buscar disciplinas\n 2- Ver alunos em uma disciplina 0- Voltar\n");
+        Integer escolha = Util.lerInt(" 1- Buscar suas disciplinas\n 2- Ver todas as disciplinas\n 3- Ver alunos em uma disciplina\n 4- Se cadastrar em disciplina 0- Voltar\n");
         switch (escolha) {
             case 1 -> System.out.println(this.buscarDisciplinas());
             case 2 -> this.listarAlunos();
+            case 3 -> this.inscreverMateria();
             case 0 -> {
                 return false;
             }
@@ -103,7 +112,7 @@ public class Professor extends Usuario {
 
     @Override
     public String toString() {
-        return "Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
+        return " Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
     };
 
 }

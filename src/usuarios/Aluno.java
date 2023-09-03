@@ -38,6 +38,9 @@ import app.Util;
  */
 public class Aluno extends Usuario {
 
+    /** nome do aluno */
+    private final String NOME;
+
     /** curso do aluno */
     private Curso curso;
 
@@ -51,12 +54,14 @@ public class Aluno extends Usuario {
      * Construtor da classe Aluno, alunos recém matriculaos não possuem disciplinas
      * escolhidas
      * 
+     * @param nome      nome do aluno
      * @param matricula matricula do aluno
      * @param passwd    senha do aluno
      * @param curso     curso do aluno
      */
-    public Aluno(Integer matricula, String passwd, Curso curso) {
+    public Aluno(String nome, Integer matricula, String passwd, Curso curso) {
         super(matricula, passwd);
+        this.NOME = nome;
         this.curso = curso;
         this.disciplinas = this.curso.getDisciplinasIniciais();
     };
@@ -64,12 +69,12 @@ public class Aluno extends Usuario {
     /**
      * Matricula o aluno em disciplinas e checa se as disciplinas são válidas
      * 
-     * @param disciplinas disciplinas a serem matriculadas
+     * @param disciplinasAdc disciplinas a serem matriculadas
      */
-    public void efetuarMatricula(Stream<Disciplina> disciplinasRem) {
+    public void efetuarMatricula(Stream<Disciplina> disciplinasAdc) {
 
         // concatenar as disciplinas atuais com as novas e unir em uma coleção
-        List<Disciplina> disciplinas = Stream.concat(Stream.of(this.disciplinas), disciplinasRem).toList();
+        List<Disciplina> disciplinas = Stream.concat(Stream.of(this.disciplinas), disciplinasAdc).toList();
 
         if (disciplinas.stream().filter(d -> d.eObrigatria()).count() == 0 // verificar se o aluno está matriculado em
                                                                            // pelo menos uma disciplina
@@ -122,7 +127,7 @@ public class Aluno extends Usuario {
                 disciplinasRem.stream() //
         );
         return true;
-    }
+    };
 
     /**
      * Desmatricula o aluno de disciplinas e o avisa quais foram desmatriculadas
@@ -167,7 +172,7 @@ public class Aluno extends Usuario {
                 disciplinasRem.stream() //
         );
         return true;
-    }
+    };
 
     /**
      * Permitir que o aluno veja as disciplinas que ele está matriculado
@@ -185,15 +190,13 @@ public class Aluno extends Usuario {
             case 1 -> {
                 if (App.getApp().matriculasAbertas())
                     System.out.println(
-                            " Nao e possivel matricular-se agora, as matriculas estao fechadas, tente novamente mais tarde."
-                    );
+                            " Nao e possivel matricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
                 return this.matricular();
             }
             case 2 -> {
                 if (App.getApp().matriculasAbertas())
                     System.out.println(
-                            " Nao e possivel desmatricular-se agora, as matriculas estao fechadas, tente novamente mais tarde."
-                    );
+                            " Nao e possivel desmatricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
                 return this.desmatricular();
             }
             case 3 -> {
@@ -211,6 +214,15 @@ public class Aluno extends Usuario {
         return "Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
                 + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
+    };
+
+    /**
+     * Retorna o nome do aluno e sua matricula
+     * 
+     * @return nome do aluno e sua matricula
+     */
+    public String getInfo() {
+        return "Aluno " + this.NOME + " matricula " + this.matricula;
     };
 
 }

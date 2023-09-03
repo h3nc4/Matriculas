@@ -24,13 +24,13 @@ package error;
  * Exceção lançada quando uma disciplina está cheia
  */
 public class DisciplinaCompletaException extends Exception {
-    
-        /**
-        * Constrói uma nova exceção com a mensagem especificada
-        *
-        * @param message a ser exibida para o usuário
-        */
-        public DisciplinaCompletaException(String message) {
-            super(message);
-        };
+
+    /**
+     * Constrói uma nova exceção com a mensagem especificada
+     *
+     * @param message a ser exibida para o usuário
+     */
+    public DisciplinaCompletaException(String message) {
+        super(message);
+    };
 }

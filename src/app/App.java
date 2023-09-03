@@ -71,12 +71,19 @@ public class App implements java.io.Serializable {
         this.disciplinas = new HashMap<>();
     }; // @formatter:off
 
-    /** Padrão Singleton */
+    /** Padrão Singleton 
+     * @return instância única da classe */
     public static App getApp() { if (App.instancia == null) App.instancia = new App(); return App.instancia; };
 
     /** Retorna o estado das matrículas
      * @return {@code TRUE} se as matrículas estão abertas ou {@code FALSE} caso estejam fechadas */
     public Boolean matriculasAbertas() { return this.matriculasAbertas; };
+
+    /** Abre as matrículas */
+    public void abrirMatriculas() { this.matriculasAbertas = Boolean.TRUE; };
+
+    /** Fecha as matrículas */
+    public void fecharMatriculas() { this.matriculasAbertas = Boolean.FALSE; };
 
     /** Busca uma disciplina
      * @param nome nome da disciplina
@@ -96,7 +103,6 @@ public class App implements java.io.Serializable {
             if (user == -1)
                 return Boolean.FALSE;
             this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
-
         } catch (NullPointerException e) {
             System.out.println(" ERRO: Usuario nao existente.");
         }
@@ -122,6 +128,7 @@ public class App implements java.io.Serializable {
         this.usuarios.put(
                 this.proxMatricula,
                 new Aluno(
+                        Util.lerStr(" Nome: "),
                         this.proxMatricula++,
                         senha,
                         curso //
@@ -170,6 +177,20 @@ public class App implements java.io.Serializable {
                                                              // o nome da disciplina para avisar o usuário
                     return add;
                 });
+    };
+
+    /**
+     * Lista as disciplinas disponíveis para professores lecionarem
+     * 
+     * @return disciplinas disponíveis
+     */
+    public String listarDisciplinas() {
+        StringBuilder disciplinas = new StringBuilder();
+        this.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
+                .filter(d -> !d.temProfessor()) // filtra as disciplinas que não possuem professor
+                .forEach(d -> disciplinas.append(d.getNome() + "\n")); // adiciona o nome das disciplinas ao
+                                                                       // StringBuilder
+        return new String(disciplinas);
     };
 
     /**
@@ -237,6 +258,7 @@ public class App implements java.io.Serializable {
     };
 
     /**
+     * \
      * Imprime as disciplinas do mapa de disciplinas.
      */
     public void printDisciplinas() {
@@ -277,8 +299,8 @@ public class App implements java.io.Serializable {
 
         while (app.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
             while (app.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
-                                                   // TRUE, o menu é exibido novamente, caso contrário, o usuário é
-                                                   // deslogado e enviado para o loop externo
+                                                  // TRUE, o menu é exibido novamente, caso contrário, o usuário é
+                                                  // deslogado e enviado para o loop externo
                 ;
         }
     };
