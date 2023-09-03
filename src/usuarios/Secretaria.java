@@ -35,13 +35,16 @@ public class Secretaria extends Usuario {
     /**
      * Construtor da classe Secretaria
      * 
-     * @param matricula matricula da secretaria
+     * @param matricula matrícula da secretaria
      * @param passwd    senha da secretaria
      */
     public Secretaria(Integer matricula, String passwd) {
         super(matricula, passwd);
     };
 
+    /**
+     * Menu de cadastro dos itens no sistema
+     */
     public void menuCadastro() {
         Integer escolha = App.lerInt(
                 " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n");
@@ -62,6 +65,9 @@ public class Secretaria extends Usuario {
         }
     };
 
+    /**
+     * Menu de impressão dos itens no sistema
+     */
     public void menuPrint() {
         Integer escolha = App.lerInt(
                 " 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
