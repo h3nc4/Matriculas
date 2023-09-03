@@ -23,6 +23,7 @@ package usuarios;
 import java.util.List;
 
 import curso.Disciplina;
+import app.App;
 
 /**
  * Classe que representa um professor
@@ -33,6 +34,9 @@ public class Professor extends Usuario {
 
     /** disciplinas do professor */
     private List<Disciplina> disciplinas;
+
+    /** serial version UID */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Construtor da classe Professor
@@ -53,8 +57,24 @@ public class Professor extends Usuario {
         this.disciplinas.add(disciplina);
     };
 
+    /**
+     * Retorna as disciplinas do professor em string
+     */
+    public String buscarDisciplinas() {
+        StringBuilder disciplinas = new StringBuilder();
+        this.disciplinas.forEach(disciplina -> disciplinas.append(disciplina.toString() + "\n"));
+        return new String(disciplinas);
+    };
+
     @Override
-    public Boolean menu(){
+    public Boolean menu() {
+        Integer escolha = App.lerInt(" 1- Buscar disciplinas\n 0- Voltar\n");
+        switch (escolha) {
+            case 1 -> System.out.println(this.buscarDisciplinas());
+            case 0 -> {
+                return false;
+            }
+        }
         return true;
     };
 

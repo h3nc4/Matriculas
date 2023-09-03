@@ -28,6 +28,7 @@ import java.util.stream.Stream;
 
 import error.ChaveInvalidaException;
 import error.OperacaoNaoSuportadaException;
+
 import usuarios.Aluno;
 import usuarios.Professor;
 import usuarios.Secretaria;
@@ -58,15 +59,15 @@ public class App {
     /** Retorna um curso
      * @param nome nome do curso
      * @return curso*/
-    public static Curso getCurso(String nome) { return cursos.get(nome); }
+    public static Curso getCurso(String nome) { return cursos.get(nome); };
 
     /** Busca uma disciplina
      * @param nome nome da disciplina
      * @return disciplina*/ 
-    public static Disciplina getDisciplina(String nome) { return disciplinas.get(nome); }
+    public static Disciplina getDisciplina(String nome) { return disciplinas.get(nome); };
 
     /** classe não instanciável */
-    private App() { throw new InstantiationError("Classe nao instanciavel"); } // @formatter:on
+    private App() { throw new InstantiationError("Classe nao instanciavel"); }; // @formatter:on
 
     /**
      * Método que lê uma string do console através do {@link System#console()}.
@@ -95,7 +96,7 @@ public class App {
     /**
      * Limpa o console.
      */
-    public static void clearConsole() {
+    public static void limparTerminal() {
         try {
             new ProcessBuilder(System.getProperty("os.name").toLowerCase().contains("win") ? "cls" : "clear")
                     .inheritIO()
@@ -123,7 +124,7 @@ public class App {
      * Realiza o login do usuário.
      */
     public static Boolean login() {
-        App.clearConsole();
+        App.limparTerminal();
         try {
             int user = App.lerInt(" " + App.saudacao());
             if (user == -1)
@@ -273,7 +274,7 @@ public class App {
      * Imprime as disciplinas do mapa de disciplinas.
      */
     public static void printDisciplinas() {
-        App.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
+        App.disciplinas.values() // transforma o mapa de disciplinas em uma coleção
                 .forEach(System.out::println); // imprime as disciplinas
     };
 
@@ -281,8 +282,18 @@ public class App {
      * Imprime os cursos do mapa de cursos.
      */
     public static void printCursos() {
-        App.cursos.values().stream() // transforma o mapa de cursos em um stream
+        App.cursos.values() // transforma o mapa de cursos em uma coleção
                 .forEach(System.out::println); // imprime os cursos
+    };
+
+    public static void alterarDisciplina() {
+        Disciplina disciplina = App.disciplinas.get(App.lerStr(" Digite o nome da disciplina: ").toLowerCase());
+        if (disciplina == null) {
+            System.out.println(" ERRO: Disciplina nao existente.");
+            return;
+        }
+        disciplina.setOpcional(App.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s"));
+        disciplina.setCreditos(App.lerInt(" Creditos: "));
     };
 
     /**
@@ -300,7 +311,7 @@ public class App {
                                             // deslogado e enviado para o loop externo
                 ;
         }
-    }
+    };
 
     /**
      * Escreve usuários, cursos e disciplinas em arquivos.
@@ -312,7 +323,7 @@ public class App {
         fabrica.escreverObjeto("cursos.ser", cursos);
         fabrica.escreverObjeto("disciplinas.ser", disciplinas);
         fabrica.escreverObjeto("proxMatricula.ser", proxMatricula);
-    }
+    };
 
     /**
      * Lê usuários, cursos e disciplinas de arquivos.
@@ -325,6 +336,6 @@ public class App {
         App.cursos = (HashMap<String, Curso>) fabrica.lerObjeto("cursos.ser");
         App.disciplinas = (HashMap<String, Disciplina>) fabrica.lerObjeto("disciplinas.ser");
         App.proxMatricula = (Integer) fabrica.lerObjeto("proxMatricula.ser");
-    }
+    };
 
 }

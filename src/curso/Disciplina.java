@@ -20,6 +20,10 @@
 
 package curso;
 
+import error.DisciplinaCompletaException;
+
+import usuarios.Aluno;
+
 /**
  * Classe que representa uma disciplina
  */
@@ -27,6 +31,9 @@ public class Disciplina implements java.io.Serializable {
 
     /** disciplina é opcional */
     private Boolean opcional;
+
+    /** disciplina está ativa */
+    private Boolean estaAtiva;
 
     /** creditos da disciplina */
     private Integer creditos;
@@ -55,12 +62,35 @@ public class Disciplina implements java.io.Serializable {
         this.creditos = creditos;
         this.opcional = opcional;
         this.qtdAlunos = 0;
+        this.estaAtiva = Boolean.FALSE;
+    };
+
+    /**
+     * Adiciona um aluno na disciplina.
+     * 
+     * @see Aluno#matricular(Disciplina[])
+     */
+    public void addAluno() throws DisciplinaCompletaException {
+        if (++this.qtdAlunos > MAX_ALUNOS) {
+            this.qtdAlunos--;
+            throw new DisciplinaCompletaException("Numero maximo de alunos atingido na disciplina " + this.NOME + ".");
+        }
+    };
+
+    /**
+     * Remove um aluno na disciplina.
+     * 
+     * @see Aluno#matricular(Disciplina[])
+     */
+    public void removeAluno() {
+        this.qtdAlunos--;
     };
 
     @Override
     public String toString() {
-        return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + "de " + this.creditos
-                + " creditos.\n Ha " + this.qtdAlunos + " alunos matriculados atualmente.";
+        return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
+                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha " + this.qtdAlunos
+                + " alunos matriculados atualmente.";
     }; //@formatter:off
 
     /** Retorna o nome da disciplina
@@ -70,5 +100,13 @@ public class Disciplina implements java.io.Serializable {
     /** Retorna se a disciplina é obrigatória
      * @return se a disciplina é obrigatória */
     public boolean eObrigatria() { return !this.opcional;};
+
+    /** Altera o valor de opcional
+     * @param opcional novo valor */
+    public void setOpcional(boolean opcional) { this.opcional = opcional; };
+
+    /** Altera o total de creditos
+     * @param creditos novo valor */
+    public void setCreditos(int creditos) { this.creditos = creditos; };
 
 }

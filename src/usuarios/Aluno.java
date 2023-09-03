@@ -26,14 +26,13 @@ import java.util.stream.Stream;
 
 import curso.Curso;
 import curso.Disciplina;
+import error.DisciplinaCompletaException;
 import app.App;
 
 /**
  * Classe que representa um aluno
  * 
- * @see Usuario    };
-
-    /**
+ * @see Usuario
  */
 public class Aluno extends Usuario {
 
@@ -42,6 +41,9 @@ public class Aluno extends Usuario {
 
     /** disciplinas do aluno */
     private Disciplina[] disciplinas;
+
+    /** serial version UID */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Construtor da classe Aluno, alunos recém matriculaos não possuem disciplinas
@@ -58,26 +60,47 @@ public class Aluno extends Usuario {
     };
 
     /**
-     * Matricula o aluno em disciplinas
+     * Matricula o aluno em disciplinas e checa se as disciplinas são válidas
      * 
      * @param disciplinas disciplinas a serem matriculadas
      * @return {@code TRUE} se o aluno foi matriculado em pelo menos uma disciplina
      *         e {@code FALSE} caso contrário
      */
     public Boolean matricular(Disciplina[] disciplinas) {
-        if (Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() == 0 // verificar se o aluno está matriculado em
-                                                                             // pelo menos uma disciplina
-                || Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() > 4 // verificar se o aluno está
-                                                                                   // matriculado em no máximo 4
-                                                                                   // disciplinas obrigatórias
-                || Stream.of(disciplinas).filter(d -> !d.eObrigatria()).count() > 2) { // verificar se o aluno está
-                                                                                       // matriculado em no máximo 2
-                                                                                       // disciplinas opcionais
+
+        // concatenar as disciplinas atuais com as novas
+        disciplinas = Stream.of(this.disciplinas, disciplinas).flatMap(Stream::of).toArray(Disciplina[]::new);
+
+        try {
+            if (Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() == 0 // verificar se o aluno está
+                                                                                 // matriculado em
+                                                                                 // pelo menos uma disciplina
+                    || Stream.of(disciplinas).filter(d -> d.eObrigatria()).count() > 4 // verificar se o aluno está
+                                                                                       // matriculado em no máximo 4
+                                                                                       // disciplinas obrigatórias
+                    || Stream.of(disciplinas).filter(d -> !d.eObrigatria()).count() > 2) { // verificar se o aluno está
+                                                                                           // matriculado em no máximo 2
+                                                                                           // disciplinas opcionais
+                System.out.println(
+                        " Erro ao realizar matricula, verifique se as disciplinas sao validas e se o total de cada disciplina esta correto" //
+                );
+                return false;
+            }
+    
+        } catch (NullPointerException e) { // caso o aluno não tenha sido matriculado em nenhuma disciplina
             System.out.println(
                     " Erro ao realizar matricula, verifique se as disciplinas sao validas e se o total de cada disciplina esta correto" //
             );
             return false;
         }
+
+        Stream.of(disciplinas).forEach(d -> {
+            try {
+                d.addAluno();
+            } catch (DisciplinaCompletaException e) {
+                System.out.println(" Nao foi possivel matricular-se em " + d.getNome() + ": " + e.getMessage());
+            }
+        }); // adicionar o aluno em cada disciplina
         this.disciplinas = disciplinas;
         return true;
     };
@@ -92,10 +115,19 @@ public class Aluno extends Usuario {
             for (Disciplina disciplina : this.disciplinas)
                 if (disciplina.getNome().equals(d)) {
                     System.out.println(" Desmatriculado de " + d);
+                    disciplina.removeAluno();
                     return false;
                 }
             return true;
         }).toArray(String[]::new);
+    };
+
+    /**
+     * Permitir que o aluno veja as disciplinas que ele está matriculado
+     */
+    public void verDisciplinas() {
+        System.out.println(" Disciplinas matriculadas:");
+        Stream.of(this.disciplinas).forEach(d -> System.out.println(" " + d.getNome()));
     };
 
     @Override

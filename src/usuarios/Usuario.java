@@ -22,7 +22,10 @@ package usuarios;
 
 /**
  * Interface que define o comportamento de um usuário do sistema
+ * Por ser serializável, Usuário permite que seus filhos também sejam
+ * serializáveis
  * 
+ * @see java.io.Serializable
  * @see Aluno
  * @see Professor
  * @see Secretaria
@@ -49,7 +52,7 @@ abstract public class Usuario implements java.io.Serializable {
     /**
      * Realiza o login do usuário
      * 
-     * @param passwd    senha do usuário
+     * @param passwd senha do usuário
      * @return {@code TRUE} se o login foi realizado com sucesso, {@code FALSE} caso
      *         contrário
      */

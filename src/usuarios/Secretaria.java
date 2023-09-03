@@ -32,6 +32,9 @@ import app.App;
  */
 public class Secretaria extends Usuario {
 
+    /** serial version UID */
+    private static final long serialVersionUID = 1L;
+
     /**
      * Construtor da classe Secretaria
      * 
@@ -68,9 +71,9 @@ public class Secretaria extends Usuario {
     /**
      * Menu de impressão dos itens no sistema
      */
-    public void menuPrint() {
-        Integer escolha = App.lerInt(
-                " 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
+    public void menuLeitura() {
+        Integer escolha = App
+                .lerInt(" 1- Ver Alunos\n 2- Ver Professores\n 3- Ver Disciplinas\n 4- Ver Cursos\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> App.printAlunos();
             case 2 -> App.printProfessores();
@@ -82,12 +85,13 @@ public class Secretaria extends Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = App.lerInt(
-                " 1- Cadastrar no sistema\n 2- Ver no sistema 3- Salvar\n 4- Carregar\n 0- Logoff\n");
+                " 1- Cadastrar no sistema\n 2- Ver no sistema 3- Alterar Disciplina 4- Salvar\n 5- Carregar\n 0- Logoff\n ");
         switch (escolha) {
             case 1 -> this.menuCadastro();
-            case 2 -> this.menuPrint();
-            case 3 -> App.escrever();
-            case 4 -> App.ler();
+            case 2 -> this.menuLeitura();
+            case 3 -> App.alterarDisciplina();
+            case 4 -> App.escrever();
+            case 5 -> App.ler();
             case 0 -> {
                 System.out.println("Saindo...");
                 return false;

@@ -6,7 +6,7 @@
 
     curso -> O pacote "curso" contém as classes relacionadas a cursos e disciplinas, incluindo as classes Curso e Disciplina.
 
-    error -> O pacote "error" contém as classes de exceção personalizadas utilizadas no sistema, incluindo as classes ChaveInvalidaException e OperacaoNaoSuportadaException.
+    error -> O pacote "error" contém as classes de exceção personalizadas utilizadas no sistema, incluindo as classes ChaveInvalidaException,OperacaoNaoSuportadaException e DisciplinaCompletaException.
 
     usuarios -> O pacote "usuarios" contém as classes relacionadas aos diferentes tipos de usuários do sistema, incluindo as classes Aluno, Professor, Secretaria e a classe pai Usuario.
 
