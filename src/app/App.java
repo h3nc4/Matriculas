@@ -23,6 +23,7 @@ package app;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +46,7 @@ public class App {
     private static Integer proxMatricula = 1;
 
     /** Usuário atual */
-    private static Usuario usuarioAtual = null;
+    private static Optional<Usuario> usuarioAtual = null;
 
     /** Mapa de usuários */
     private static HashMap<Integer, Usuario> usuarios = new HashMap<>();
@@ -129,12 +130,12 @@ public class App {
             int user = App.lerInt(" " + App.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            App.usuarioAtual = usuarios.get(user).login(App.lerStr(" Senha: "));
+            App.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(App.lerStr(" Senha: ")));
 
         } catch (NullPointerException e) {
             System.out.println(" ERRO: Usuario nao existente.");
         }
-        if (usuarioAtual == null)
+        if (usuarioAtual.isEmpty())
             System.out.println(" ERRO: Senha incorreta.");
         return Boolean.TRUE;
     };
@@ -306,9 +307,9 @@ public class App {
         App.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
         while (App.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
-            while (App.usuarioAtual.menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
-                                            // TRUE, o menu é exibido novamente, caso contrário, o usuário é
-                                            // deslogado e enviado para o loop externo
+            while (App.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
+                                                  // TRUE, o menu é exibido novamente, caso contrário, o usuário é
+                                                  // deslogado e enviado para o loop externo
                 ;
         }
     };
@@ -328,7 +329,7 @@ public class App {
     /**
      * Lê usuários, cursos e disciplinas de arquivos.
      */
-    @SuppressWarnings (value="unchecked")
+    @SuppressWarnings(value = "unchecked")
     public static void ler() {
         Fabrica fabrica = Fabrica.getInstancia();
 
