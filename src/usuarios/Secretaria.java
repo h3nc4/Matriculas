@@ -92,7 +92,7 @@ public class Secretaria extends Usuario {
             case 2 -> this.menuLeitura();
             case 3 -> App.getApp().alterarDisciplina();
             case 4 -> {
-                if (Util.lerStr("Deseja abrir ou fechar as matriculas? (abrir/fechar)").equalsIgnoreCase("abrir"))
+                if (Util.lerStr(" Deseja abrir ou fechar as matriculas? (abrir/fechar)").equalsIgnoreCase("abrir"))
                     App.getApp().abrirMatriculas();
                 else
                     App.getApp().fecharMatriculas();

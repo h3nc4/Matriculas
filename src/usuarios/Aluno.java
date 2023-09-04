@@ -22,6 +22,7 @@ package usuarios;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import error.DisciplinaCompletaException;
@@ -64,6 +65,14 @@ public class Aluno extends Usuario {
         this.NOME = nome;
         this.curso = curso;
         this.disciplinas = this.curso.getDisciplinasIniciais();
+
+        Stream.of(this.disciplinas).forEach(d -> {
+            try {
+                d.adcAluno(this);
+            } catch (DisciplinaCompletaException e) {
+                System.out.println(" Nao foi possivel matricular-se em " + d.getNome() + ": " + e.getMessage());
+            }
+        });
     };
 
     /**
@@ -89,7 +98,7 @@ public class Aluno extends Usuario {
 
         disciplinas.forEach(d -> {
             try {
-                d.addAluno(this);
+                d.adcAluno(this);
             } catch (DisciplinaCompletaException e) {
                 System.out.println(" Nao foi possivel matricular-se em " + d.getNome() + ": " + e.getMessage());
             }
@@ -211,9 +220,9 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return "Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
+        return " Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
-                + Stream.of(this.disciplinas).map(d -> d.getNome()).reduce("", (a, b) -> a + ", " + b);
+                + Stream.of(this.disciplinas).map(d -> d.getNome()).collect(Collectors.joining(", "));
     };
 
     /**
@@ -223,6 +232,17 @@ public class Aluno extends Usuario {
      */
     public String getInfo() {
         return "Aluno " + this.NOME + " matricula " + this.matricula;
+    }
+
+    /**
+     * Remove uma disciplina do aluno.
+     * APENAS PARA USO INTERNO
+     * 
+     * @param d disciplina a ser removida
+     * @see App#fecharMatriculas()
+     */
+    public void removeDisciplina(Disciplina d) {
+        this.disciplinas = Stream.of(this.disciplinas).filter(disc -> !disc.equals(d)).toArray(Disciplina[]::new);
     };
 
 }

@@ -21,6 +21,9 @@
 package app;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,16 +53,16 @@ public class App implements java.io.Serializable {
     private Integer proxMatricula;
 
     /** Usuário atual */
-    private Optional<Usuario> usuarioAtual;
+    private transient Optional<Usuario> usuarioAtual;
 
     /** Mapa de usuários */
-    private HashMap<Integer, Usuario> usuarios;
+    private Map<Integer, Usuario> usuarios;
 
     /** Mapa de cursos */
-    private HashMap<String, Curso> cursos;
+    private Map<String, Curso> cursos;
 
     /** Mapa de disciplinas */
-    private HashMap<String, Disciplina> disciplinas;
+    private Map<String, Disciplina> disciplinas;
 
     /** Padrão Singleton */
     private App() {
@@ -82,13 +85,40 @@ public class App implements java.io.Serializable {
     /** Abre as matrículas */
     public void abrirMatriculas() { this.matriculasAbertas = Boolean.TRUE; };
 
-    /** Fecha as matrículas */
-    public void fecharMatriculas() { this.matriculasAbertas = Boolean.FALSE; };
-
     /** Busca uma disciplina
      * @param nome nome da disciplina
      * @return disciplina*/ 
     public Disciplina getDisciplina(String nome) { return disciplinas.get(nome); }; // @formatter:on
+
+    /**
+     * Passa por todas as disciplinas e verifica se elas estão ativas e se possuem
+     * professor, caso não estejam, elas são removidas dos 2 ou menos alunos que
+     * possuem a disciplina.
+     * 
+     * A disciplina não é removida do mapa de disciplinas, pois ela pode ser
+     * reativada no futuro.
+     */
+    public void fecharMatriculas() {
+        List<Disciplina> aRemover = this.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
+                .filter(d -> !d.estaAtiva() || !d.temProfessor()) // filtra as disciplinas que não estão ativas ou não
+                                                                  // possuem professor
+                .collect(Collectors.toList()); // transforma o stream em uma lista
+
+        if (aRemover.size() == 0) {
+            System.out.println(" Nenhuma disciplina foi removida.");
+            return;
+        }
+
+        if (Util.lerStr(" Deseja remover os alunos das seguintes disciplinas inativas? (s/n)\n " + aRemover.stream()
+                .map(d -> d.getNome()) // transforma o stream em um stream de nomes de disciplinas
+                .collect(Collectors.joining(", "))) // transforma o stream em uma string separada por vírgulas
+                .equalsIgnoreCase("s")) {
+            aRemover.forEach(d -> d.getAlunos().forEach(a -> a.removeDisciplina(d))); // remove as disciplinas dos
+                                                                                      // alunos
+        }
+
+        this.matriculasAbertas = Boolean.FALSE;
+    };
 
     /**
      * Realiza o login do usuário.
@@ -105,9 +135,15 @@ public class App implements java.io.Serializable {
             this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
         } catch (NullPointerException e) {
             System.out.println(" ERRO: Usuario nao existente.");
+            usuarioAtual = Optional.empty();
+            Util.pause();
+            return Boolean.TRUE;
         }
-        if (usuarioAtual.isEmpty())
+        if (usuarioAtual == null) {
             System.out.println(" ERRO: Senha incorreta.");
+            usuarioAtual = Optional.empty();
+            Util.pause();
+        }
         return Boolean.TRUE;
     };
 
@@ -171,11 +207,11 @@ public class App implements java.io.Serializable {
     private Stream<Disciplina> buscaDisciplinas(String mensagem) {
         return Stream.of(Util.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
-                    Disciplina add = this.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
-                    if (add == null)
+                    Disciplina adc = this.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
+                    if (adc == null)
                         throw new ChaveInvalidaException(d); // caso a disciplina não exista, lança uma exceção passando
                                                              // o nome da disciplina para avisar o usuário
-                    return add;
+                    return adc;
                 });
     };
 
@@ -199,7 +235,7 @@ public class App implements java.io.Serializable {
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
-        HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) this
+        Map<String, Disciplina> disciplinasC = (Map<String, Disciplina>) this
                 .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula: ")
                 .collect(
                         Collectors.toMap(d -> d.getNome(), d -> d) //
@@ -298,10 +334,16 @@ public class App implements java.io.Serializable {
         app.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
         while (app.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
-            while (app.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele retorne
-                                                  // TRUE, o menu é exibido novamente, caso contrário, o usuário é
-                                                  // deslogado e enviado para o loop externo
-                ;
+            if (app.usuarioAtual.isEmpty())
+                continue;
+            try {
+                while (app.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele
+                                                      // retorne TRUE, o menu é exibido novamente, caso contrário, o
+                                                      // usuário é deslogado e enviado para o loop externo
+                    ;
+            } catch (NoSuchElementException e) {
+                System.out.println(" ERRO: Usuario nao existente.");
+            }
         }
     };
 
@@ -322,6 +364,7 @@ public class App implements java.io.Serializable {
         Fabrica fabrica = Fabrica.getInstancia();
 
         App.instancia = (App) fabrica.lerObjeto("sistema.ser");
+        App.instancia.usuarioAtual = Optional.empty();
     };
 
 }

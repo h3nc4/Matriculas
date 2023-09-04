@@ -22,7 +22,6 @@ package curso;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import error.DisciplinaCompletaException;
 
@@ -41,7 +40,7 @@ public class Disciplina implements java.io.Serializable {
     private Boolean estaAtiva;
 
     /** professor da disciplina */
-    private Optional<Professor> professor;
+    private Professor professor;
 
     /** creditos da disciplina */
     private Integer creditos;
@@ -72,7 +71,7 @@ public class Disciplina implements java.io.Serializable {
         this.NOME = nome;
         this.creditos = creditos;
         this.opcional = opcional;
-        this.professor = Optional.empty();
+        this.professor = null;
         this.estaAtiva = Boolean.FALSE;
         this.alunos = new LinkedList<Aluno>();
     };
@@ -84,7 +83,7 @@ public class Disciplina implements java.io.Serializable {
      * @param novoAluno aluno a ser adicionado
      * @see Aluno#matricular()
      */
-    public void addAluno(Aluno novoAluno) throws DisciplinaCompletaException {
+    public void adcAluno(Aluno novoAluno) throws DisciplinaCompletaException {
         if (this.alunos.size() >= MAX_ALUNOS)
             throw new DisciplinaCompletaException("Numero maximo de alunos atingido na disciplina " + this.NOME + ".");
         this.alunos.add(novoAluno);
@@ -97,8 +96,8 @@ public class Disciplina implements java.io.Serializable {
      * 
      * @param professor professor a ser adicionado
      */
-    public void addProfessor(Professor professor) {
-        this.professor = Optional.of(professor);
+    public void adcProfessor(Professor professor) {
+        this.professor = professor;
     };
 
     /**
@@ -130,7 +129,7 @@ public class Disciplina implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
+        return " Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
                 + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha "
                 + this.alunos.size()
                 + " alunos matriculados atualmente.";
@@ -154,6 +153,14 @@ public class Disciplina implements java.io.Serializable {
 
     /** Retorna se há um professor na disciplina
      * @return se há um professor na disciplina */
-    public boolean temProfessor() { return this.professor.isPresent(); };
+    public boolean temProfessor() { return this.professor != null; };
+
+    /** Retorna o professor da disciplina
+     * @return professor da disciplina */
+    public boolean estaAtiva() { return this.estaAtiva; };
+
+    /** Retorna os alunos da disciplina
+     * @return alunos da disciplina */
+    public List<Aluno> getAlunos() { return this.alunos;   };
 
 }

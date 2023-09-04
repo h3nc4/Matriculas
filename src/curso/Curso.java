@@ -19,7 +19,7 @@
 */
 package curso;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Classe que representa um curso
@@ -33,7 +33,7 @@ public class Curso implements java.io.Serializable {
     private Integer creditos;
 
     /** disciplinas do curso */
-    private HashMap<String, Disciplina> disciplinas;
+    private Map<String, Disciplina> disciplinas;
 
     /** disciplinas iniciais do curso */
     private Disciplina[] disciplinasIni;
@@ -46,7 +46,7 @@ public class Curso implements java.io.Serializable {
      * @param creditos       creditos do curso
      * @param disciplinasIni disciplinas iniciais do curso
      */
-    public Curso(String nome, HashMap<String, Disciplina> disciplinas, Integer creditos, Disciplina[] disciplinasIni) {
+    public Curso(String nome, Map<String, Disciplina> disciplinas, Integer creditos, Disciplina[] disciplinasIni) {
         this.NOME = nome;
         this.disciplinas = disciplinas;
         this.creditos = creditos;
@@ -66,7 +66,7 @@ public class Curso implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Curso " + this.NOME + ", de " + this.creditos + " creditos." + "\n Tem no total "
+        return " Curso " + this.NOME + ", de " + this.creditos + " creditos." + "\n Tem no total "
                 + this.disciplinas.size() + " disciplinas.";
     }; // @formatter:off
 

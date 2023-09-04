@@ -40,7 +40,8 @@ public class Util {
      * @return string lida do console.
      */
     public static String lerStr(String mensagem) {
-        return System.console().readLine(mensagem).trim();
+        String out = System.console().readLine(mensagem).trim();
+        return out.isEmpty() ? lerStr(" ERRO: Valor invalido. Digite algo: ") : out;
     };
 
     /**
@@ -69,6 +70,13 @@ public class Util {
         } catch (IOException | InterruptedException e) {
             System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
+    };
+
+    /**
+     * Pausa a execução do programa até que o usuário pressione ENTER.
+     */
+    public static void pause() {
+        System.console().readLine(" Pressione ENTER para continuar...");
     };
 
     /**

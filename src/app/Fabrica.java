@@ -20,6 +20,7 @@
 
 package app;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +38,8 @@ import java.io.ObjectOutputStream;
  * @see java.io.ObjectInputStream
  */
 public class Fabrica {
+
+    /** Instância única desta classe. */
     private static Fabrica instancia = null;
 
     /**
@@ -74,6 +77,8 @@ public class Fabrica {
             System.out.println("Erro ao ler o arquivo " + nomeArquivo);
         } catch (ClassNotFoundException e) {
             System.out.println("Erro ao buscar a classe do objeto no arquivo " + nomeArquivo);
+        } finally {
+            Util.pause();
         }
         return null;
     };
@@ -86,11 +91,16 @@ public class Fabrica {
      */
     public void escreverObjeto(String nomeArquivo, Object obj) {
         try {
+            File pasta = new File("./data");
+            if (!pasta.exists()) 
+                pasta.mkdirs();
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("./data/" + nomeArquivo));
             out.writeObject(obj);
             out.close();
         } catch (IOException e) {
-            System.out.println("Erro ao escrever o arquivo " + nomeArquivo);
+            System.out.println("Erro ao escrever o arquivo " + nomeArquivo + ": " + e.getMessage() + ".\n");
+            e.printStackTrace();
+            Util.pause();
         }
     };
 
