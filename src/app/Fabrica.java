@@ -74,9 +74,9 @@ public class Fabrica {
             in.close();
             return obj;
         } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo " + nomeArquivo);
+            System.out.println(" Erro ao ler o arquivo " + nomeArquivo);
         } catch (ClassNotFoundException e) {
-            System.out.println("Erro ao buscar a classe do objeto no arquivo " + nomeArquivo);
+            System.out.println(" Erro ao buscar a classe do objeto no arquivo " + nomeArquivo);
         } finally {
             Util.pause();
         }
@@ -98,7 +98,7 @@ public class Fabrica {
             out.writeObject(obj);
             out.close();
         } catch (IOException e) {
-            System.out.println("Erro ao escrever o arquivo " + nomeArquivo + ": " + e.getMessage() + ".\n");
+            System.out.println(" Erro ao escrever o arquivo " + nomeArquivo + ": " + e.getMessage() + ".\n");
             e.printStackTrace();
             Util.pause();
         }

@@ -68,7 +68,7 @@ public class App implements java.io.Serializable {
     private App() {
         this.matriculasAbertas = Boolean.FALSE;
         this.proxMatricula = 1;
-        this.usuarioAtual = null;
+        this.usuarioAtual = Optional.empty();
         this.usuarios = new HashMap<>();
         this.cursos = new HashMap<>();
         this.disciplinas = new HashMap<>();
@@ -179,8 +179,8 @@ public class App implements java.io.Serializable {
         this.usuarios.put(
                 this.proxMatricula,
                 new Professor(
-                        this.proxMatricula++,
-                        Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ") //
+                        this.proxMatricula,
+                        Util.lerStr(" Matricula: " + this.proxMatricula++ + "\n Senha: ") //
                 ) //
         );
     };
@@ -192,8 +192,8 @@ public class App implements java.io.Serializable {
         this.usuarios.put(
                 this.proxMatricula,
                 new Secretaria(
-                        this.proxMatricula++,
-                        Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ") //
+                        this.proxMatricula,
+                        Util.lerStr(" Matricula: " + this.proxMatricula++ + "\n Senha: ") //
                 ) //
         );
     };
@@ -363,7 +363,8 @@ public class App implements java.io.Serializable {
     public static void ler() {
         Fabrica fabrica = Fabrica.getInstancia();
 
-        App.instancia = (App) fabrica.lerObjeto("sistema.ser");
+        App lido = (App) fabrica.lerObjeto("sistema.ser");
+        App.instancia = lido == null ? App.getApp() : lido;
         App.instancia.usuarioAtual = Optional.empty();
     };
 

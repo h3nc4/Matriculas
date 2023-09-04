@@ -98,11 +98,12 @@ public class Professor extends Usuario {
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util.lerInt("\n\n 1- Buscar suas disciplinas\n 2- Ver todas as disciplinas\n 3- Ver alunos em uma disciplina\n 4- Se cadastrar em disciplina 0- Voltar\n");
+        Integer escolha = Util.lerInt("\n\n 1- Buscar suas disciplinas\n 2- Ver as disciplinas disponiveis\n 3- Ver alunos em uma disciplina\n 4- Se cadastrar em disciplina\n 0- Voltar\n");
         switch (escolha) {
             case 1 -> System.out.println(this.buscarDisciplinas());
-            case 2 -> this.listarAlunos();
-            case 3 -> this.inscreverMateria();
+            case 2 -> this.listarDisciplinas();
+            case 3 -> this.listarAlunos();
+            case 4 -> this.inscreverMateria();
             case 0 -> {
                 return false;
             }
