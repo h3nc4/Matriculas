@@ -33,4 +33,5 @@ public class DisciplinaCompletaException extends Exception {
     public DisciplinaCompletaException(String message) {
         super(message);
     };
+
 }

@@ -47,16 +47,16 @@ public class Disciplina implements java.io.Serializable {
     private Integer creditos;
 
     /** alunos na disciplina */
-    List<Aluno> alunos;
+    private List<Aluno> alunos;
 
     /** nome da disciplina */
     private final String NOME;
 
     /** numero maximo de alunos na disciplina */
-    public static final Integer MAX_ALUNOS = 60;
+    private static final Integer MAX_ALUNOS = 60;
 
     /** numero minimo de alunos na disciplina */
-    public static final Integer MIN_ALUNOS = 3;
+    private static final Integer MIN_ALUNOS = 3;
 
     /** serial version UID */
     private static final long serialVersionUID = 1L;
@@ -109,7 +109,12 @@ public class Disciplina implements java.io.Serializable {
      * @return {@code TRUE} se o aluno foi removido, {@code FALSE} caso contrário.
      */
     public Boolean removeAluno(Aluno aluno) {
-        return this.alunos.remove(aluno);
+        if (this.alunos.remove(aluno)) {
+            if (this.alunos.size() < MIN_ALUNOS)
+                this.estaAtiva = Boolean.FALSE;
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     };
 
     /**

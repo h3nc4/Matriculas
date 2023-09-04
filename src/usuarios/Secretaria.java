@@ -51,7 +51,7 @@ public class Secretaria extends Usuario {
      */
     public void menuCadastro() {
         Integer escolha = Util.lerInt(
-                " 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n");
+                "\n\n 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n ");
         switch (escolha) {
             case 1 -> App.getApp().novoAluno();
             case 2 -> App.getApp().novoProfessor();
@@ -74,7 +74,7 @@ public class Secretaria extends Usuario {
      */
     public void menuLeitura() {
         Integer escolha = Util
-                .lerInt(" 1- Imprimir Alunos\n 2- Imprimir Professores\n 3- Imprimir Disciplinas\n 4- Imprimir Cursos\n 0- Voltar\n");
+                .lerInt("\n\n 1- Imprimir Alunos\n 2- Imprimir Professores\n 3- Imprimir Disciplinas\n 4- Imprimir Cursos\n 0- Voltar\n ");
         switch (escolha) {
             case 1 -> App.getApp().printAlunos();
             case 2 -> App.getApp().printProfessores();
@@ -86,7 +86,7 @@ public class Secretaria extends Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = Util.lerInt(
-                " 1- Cadastrar no sistema\n 2- Imprimir curriculos 3- Alterar Disciplina 4- Abrir/Fechar matriculas\n 5- Salvar\n 6- Carregar\n 0- Logoff\n ");
+                "\n\n 1- Cadastrar no sistema\n 2- Imprimir curriculos\n 3- Alterar Disciplina\n 4- Abrir/Fechar matriculas\n 5- Salvar\n 6- Carregar\n 0- Logoff\n ");
         switch (escolha) {
             case 1 -> this.menuCadastro();
             case 2 -> this.menuLeitura();
@@ -100,7 +100,6 @@ public class Secretaria extends Usuario {
             case 5 -> App.getApp().escrever();
             case 6 -> App.ler();
             case 0 -> {
-                System.out.println("Saindo...");
                 return false;
             }
         }

@@ -184,7 +184,7 @@ public class Aluno extends Usuario {
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util.lerInt(" Bem vindo aluno " + this.matricula
+        Integer escolha = Util.lerInt("\n\n Bem vindo aluno " + this.matricula
                 + "\n 1 - Matricular\n 2 - Desmatricular\n 3- Ver suas disciplinas\n 0 - Sair\n ");
         switch (escolha) {
             case 1 -> {
