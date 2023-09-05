@@ -81,7 +81,7 @@ public class Secretaria extends Usuario {
     @Override
     public Boolean menu() {
         Integer escolha = Util.lerInt(
-                "\n\n1- Cadastrar no sistema\n2- Imprimir curriculos\n3- Alterar Disciplina\n4- Abrir/Fechar matriculas\n5- Salvar\n6- Carregar\n0- Logoff\n");
+                "\n\n1- Cadastrar no sistema\n2- Imprimir curriculos\n3- Alterar Disciplina\n4- Abrir/Fechar matriculas\n0- Logoff\n");
         switch (escolha) {
             case 1 -> this.menuCadastro();
             case 2 -> this.menuLeitura();
@@ -92,8 +92,6 @@ public class Secretaria extends Usuario {
                 else
                     App.getApp().fecharMatriculas();
             }
-            case 5 -> App.getApp().escrever();
-            case 6 -> App.ler();
             case 0 -> {
                 return false;
             }

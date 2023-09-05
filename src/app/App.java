@@ -66,7 +66,7 @@ public class App implements java.io.Serializable {
     /** Padrão Singleton */
     private App() {
         this.matriculasAbertas = Boolean.TRUE;
-        this.proxMatricula = 1;
+        this.proxMatricula = 2;
         this.usuarioAtual = null;
         this.usuarios = new HashMap<>();
         this.cursos = new HashMap<>();
@@ -346,6 +346,14 @@ public class App implements java.io.Serializable {
     public static void main(String[] args) throws Throwable {
         App app = App.getApp();
         app.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
+        Disciplina d[] = { new Disciplina("d1", 4, false), new Disciplina("d2", 4, false),
+                new Disciplina("d3", 4, false), new Disciplina("d4", 4, false) };
+        app.disciplinas.put("d1", d[0]); // disciplina1
+        app.disciplinas.put("d2", d[1]); // disciplina2
+        app.disciplinas.put("d3", d[2]); // disciplina3
+        app.disciplinas.put("d4", d[3]); // disciplina4
+        app.cursos.put("c1", new Curso("c1", (HashMap<String, Disciplina>) app.disciplinas.clone(), 4, d)); // curso1
+        app.usuarios.put(1, new Aluno("a1", 1, "123", app.cursos.get("c1"))); // aluno1
 
         while (app.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
             if (app.usuarioAtual == null)
@@ -359,33 +367,6 @@ public class App implements java.io.Serializable {
                 System.out.println("ERRO: Usuario nao logado.");
             }
         }
-    };
-
-    /**
-     * Escreve usuários, cursos e disciplinas em arquivos.
-     */
-    public void escrever() {
-        Fabrica fabrica = Fabrica.getInstancia();
-
-        fabrica.escreverObjeto("sistema.ser", this);
-    };
-
-    /**
-     * Lê usuários, cursos e disciplinas de arquivos.
-     */
-    public static void ler() {
-        Fabrica fabrica = Fabrica.getInstancia();
-
-        App lido = (App) fabrica.lerObjeto("sistema.ser");
-        if (lido == null)
-            return;
-        App.instancia = lido;
-        // reinsere os usuários no mapa de usuários
-        App.instancia.usuarios
-                .putAll(lido.usuarios.entrySet().stream()
-                        .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()))); //
-        // anula os alunos em todas as disciplinas
-        App.instancia.disciplinas.values().forEach(d -> d.zerarDisc());
     };
 
 }

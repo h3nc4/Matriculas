@@ -197,15 +197,19 @@ public class Aluno extends Usuario {
                 + "\n1- Matricular\n2- Desmatricular\n3- Ver suas disciplinas\n0- Sair\n");
         switch (escolha) {
             case 1 -> {
-                if (!App.getApp().matriculasAbertas())
+                if (!App.getApp().matriculasAbertas()) {
                     System.out.println(
                             "Nao e possivel matricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
+                    return true;
+                }
                 return this.matricular();
             }
             case 2 -> {
-                if (!App.getApp().matriculasAbertas())
+                if (!App.getApp().matriculasAbertas()) {
                     System.out.println(
                             "Nao e possivel desmatricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
+                    return true;
+                }
                 return this.desmatricular();
             }
             case 3 -> {
@@ -220,7 +224,7 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return "Aluno " + this.matricula+ " " + this.NOME + " do curso " + this.curso.getNome() + " matriculado em "
+        return "Aluno " + this.matricula + " " + this.NOME + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
                 + Stream.of(this.disciplinas).map(d -> d.getNome()).collect(Collectors.joining(", "));
     };
