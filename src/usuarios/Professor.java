@@ -20,6 +20,7 @@
 
 package usuarios;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import curso.Disciplina;
@@ -47,6 +48,7 @@ public class Professor extends Usuario {
      */
     public Professor(Integer matricula, String passwd) {
         super(matricula, passwd);
+        this.disciplinas = new LinkedList<Disciplina>();
     };
 
     /**

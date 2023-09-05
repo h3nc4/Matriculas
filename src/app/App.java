@@ -149,8 +149,11 @@ public class App implements java.io.Serializable {
 
     /**
      * Cria e insere um novo aluno no mapa de usuários.
+     * 
+     * @throws ChaveInvalidaException        ao chamar {@link App#novoCurso()}
+     * @throws OperacaoNaoSuportadaException ao chamar {@link App#novoCurso()}
      */
-    public void novoAluno() {
+    public void novoAluno() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String senha = Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ");
         Curso curso = null;
         while (curso == null) {
@@ -204,12 +207,13 @@ public class App implements java.io.Serializable {
      * @param mensagem a ser exibida ao usuário.
      * @return stream de disciplinas de acordo com o que o usuário digitou.
      * @throws ChaveInvalidaException caso o usuário digite uma disciplina que não
-     *                               existe.
+     *                                existe.
      */
     private Stream<Disciplina> buscaDisciplinas(String mensagem) throws ChaveInvalidaException {
         return Stream.of(Util.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
-                    Disciplina adc = this.disciplinas.get(d.trim().toLowerCase()); // busca a disciplina no mapa de disciplinas
+                    Disciplina adc = this.disciplinas.get(d.trim().toLowerCase()); // busca a disciplina no mapa de
+                                                                                   // disciplinas
                     if (adc == null)
                         throw new ChaveInvalidaException(d); // caso a disciplina não exista, lança uma exceção passando
                                                              // o nome da disciplina para avisar o usuário
@@ -234,10 +238,11 @@ public class App implements java.io.Serializable {
     /**
      * Cria e insere um novo curso no mapa de cursos.
      * 
-     * @throws ChaveInvalidaException      caso o usuário digite uma disciplina que
-     *                                    não existe.
+     * @throws ChaveInvalidaException        caso o usuário digite uma disciplina
+     *                                       que
+     *                                       não existe.
      * @throws OperacaoNaoSuportadaException caso o usuário não adicione 4
-     *                                   disciplinas iniciais.
+     *                                       disciplinas iniciais.
      */
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário

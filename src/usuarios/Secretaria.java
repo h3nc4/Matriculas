@@ -52,20 +52,18 @@ public class Secretaria extends Usuario {
     public void menuCadastro() {
         Integer escolha = Util.lerInt(
                 "\n\n 1- Cadastrar Aluno\n 2- Cadastrar Professor\n 3- Cadastrar Disciplina\n 4- Cadastrar Curso\n 0- Voltar\n ");
-        switch (escolha) {
-            case 1 -> App.getApp().novoAluno();
-            case 2 -> App.getApp().novoProfessor();
-            case 3 -> App.getApp().novaDisciplina();
-            case 4 -> {
-                try {
-                    App.getApp().novoCurso();
-                } catch (ChaveInvalidaException e) {
-                    System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
-                            + "\", adicione esta disciplina ao sistema antes de criar um curso.");
-                } catch (OperacaoNaoSuportadaException e) {
-                    System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas.");
-                }
+        try {
+            switch (escolha) {
+                case 1 -> App.getApp().novoAluno();
+                case 2 -> App.getApp().novoProfessor();
+                case 3 -> App.getApp().novaDisciplina();
+                case 4 -> App.getApp().novoCurso();
             }
+        } catch (ChaveInvalidaException e) {
+            System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
+                    + "\", adicione esta disciplina ao sistema antes de criar um curso.");
+        } catch (OperacaoNaoSuportadaException e) {
+            System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas.");
         }
     };
 

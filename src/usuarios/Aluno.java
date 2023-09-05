@@ -220,7 +220,7 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return " Aluno " + this.matricula + " do curso " + this.curso.getNome() + " matriculado em "
+        return " Aluno " + this.NOME + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
                 + Stream.of(this.disciplinas).map(d -> d.getNome()).collect(Collectors.joining(", "));
     };
