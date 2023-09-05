@@ -63,7 +63,7 @@ public class Secretaria extends Usuario {
                     System.out.println(" ERRO: Disciplina nao existente: \"" + e.getMessage()
                             + "\", adicione esta disciplina ao sistema antes de criar um curso.");
                 } catch (OperacaoNaoSuportadaException e) {
-                    System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas iniciais.");
+                    System.out.println(" ERRO: Nao foram adicionadas 4 disciplinas.");
                 }
             }
         }

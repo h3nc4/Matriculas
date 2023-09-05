@@ -1,5 +1,9 @@
 # Laboratório 1 - Sistema de Matrículas
 
+## Última versão
+
+[releases](https://github.com/h3nc4/Matriculas/releases/latest)
+
 ## Integrantes
 
     Gabriel Dolabela Marques

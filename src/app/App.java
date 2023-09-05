@@ -203,11 +203,13 @@ public class App implements java.io.Serializable {
      * 
      * @param mensagem a ser exibida ao usuário.
      * @return stream de disciplinas de acordo com o que o usuário digitou.
+     * @throws ChaveInvalidaException caso o usuário digite uma disciplina que não
+     *                               existe.
      */
-    private Stream<Disciplina> buscaDisciplinas(String mensagem) {
+    private Stream<Disciplina> buscaDisciplinas(String mensagem) throws ChaveInvalidaException {
         return Stream.of(Util.lerStr(mensagem).split(",")) // lê as disciplinas do usuário
                 .map(d -> {
-                    Disciplina adc = this.disciplinas.get(d.toLowerCase()); // busca a disciplina no mapa de disciplinas
+                    Disciplina adc = this.disciplinas.get(d.trim().toLowerCase()); // busca a disciplina no mapa de disciplinas
                     if (adc == null)
                         throw new ChaveInvalidaException(d); // caso a disciplina não exista, lança uma exceção passando
                                                              // o nome da disciplina para avisar o usuário
@@ -231,15 +233,23 @@ public class App implements java.io.Serializable {
 
     /**
      * Cria e insere um novo curso no mapa de cursos.
+     * 
+     * @throws ChaveInvalidaException      caso o usuário digite uma disciplina que
+     *                                    não existe.
+     * @throws OperacaoNaoSuportadaException caso o usuário não adicione 4
+     *                                   disciplinas iniciais.
      */
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
         Map<String, Disciplina> disciplinasC = (Map<String, Disciplina>) this
-                .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula: ")
+                .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula (minimo 4): ")
                 .collect(
                         Collectors.toMap(d -> d.getNome(), d -> d) //
                 ); // transforma o stream em um mapa e o retorna para a variável disciplinasC
+
+        if (disciplinasC.size() < 4) // caso não tenham sido adicionadas 4 disciplinas, lança uma exceção
+            throw new OperacaoNaoSuportadaException();
 
         Disciplina[] disciplinasIni = this
                 .buscaDisciplinas(" Digite as 4 disciplinas iniciais do curso separadas por virgula: ")
