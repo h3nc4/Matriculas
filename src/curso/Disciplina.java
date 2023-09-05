@@ -129,8 +129,8 @@ public class Disciplina implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return " Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
-                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\n Ha "
+        return "Disciplina " + this.NOME + ", " + (this.opcional ? "opcional" : "obrigatoria") + " e "
+                + (this.estaAtiva ? "ativa" : "inativa") + " de " + this.creditos + " creditos.\nHa "
                 + this.alunos.size()
                 + " alunos matriculados atualmente.";
     }; //@formatter:off

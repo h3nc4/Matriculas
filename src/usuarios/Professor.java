@@ -82,7 +82,7 @@ public class Professor extends Usuario {
      * Lista os alunos de uma disciplina
      */
     public void listarAlunos() {
-        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr(" Digite o nome da disciplina: "));
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
         if (disciplina != null)
             System.out.println(disciplina.listarAlunos());
     };
@@ -91,16 +91,16 @@ public class Professor extends Usuario {
      * Inscreve o professor em uma disciplina
      */
     public void inscreverMateria() {
-        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr(" Digite o nome da disciplina: "));
+        Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
         if (disciplina != null)
             this.disciplinas.add(disciplina);
         else
-            System.out.println(" Disciplina não encontrada");
+            System.out.println("Disciplina não encontrada");
     };
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util.lerInt("\n\n 1- Buscar suas disciplinas\n 2- Ver as disciplinas disponiveis\n 3- Ver alunos em uma disciplina\n 4- Se cadastrar em disciplina\n 0- Voltar\n");
+        Integer escolha = Util.lerInt("\n\n1- Buscar suas disciplinas\n2- Ver as disciplinas disponiveis\n3- Ver alunos em uma disciplina\n4- Se cadastrar em disciplina\n0- Voltar\n");
         switch (escolha) {
             case 1 -> System.out.println(this.buscarDisciplinas());
             case 2 -> this.listarDisciplinas();
@@ -115,7 +115,7 @@ public class Professor extends Usuario {
 
     @Override
     public String toString() {
-        return " Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
+        return "Professor " + this.matricula + " lecionando " + this.disciplinas.size() + " disciplinas.";
     };
 
 }

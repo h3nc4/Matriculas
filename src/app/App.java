@@ -105,11 +105,11 @@ public class App implements java.io.Serializable {
                 .collect(Collectors.toList()); // transforma o stream em uma lista
 
         if (aRemover.size() == 0) {
-            System.out.println(" Nenhuma disciplina foi removida.");
+            System.out.println("Nenhuma disciplina foi removida.");
             return;
         }
 
-        if (Util.lerStr(" Deseja remover os alunos das seguintes disciplinas inativas? (s/n)\n " + aRemover.stream()
+        if (Util.lerStr("Deseja remover os alunos das seguintes disciplinas inativas? (s/n)\n" + aRemover.stream()
                 .map(d -> d.getNome()) // transforma o stream em um stream de nomes de disciplinas
                 .collect(Collectors.joining(", "))) // transforma o stream em uma string separada por vírgulas
                 .equalsIgnoreCase("s")) {
@@ -129,18 +129,18 @@ public class App implements java.io.Serializable {
     public Boolean login() {
         Util.limparTerminal();
         try {
-            Integer user = Util.lerInt(" " + Util.saudacao());
+            Integer user = Util.lerInt("" + Util.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr(" Senha: ")));
+            this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr("Senha: ")));
         } catch (NullPointerException e) {
-            System.out.println(" ERRO: Usuario nao existente.");
+            System.out.println("ERRO: Usuario nao existente.");
             usuarioAtual = Optional.empty();
             Util.pause();
             return Boolean.TRUE;
         }
         if (usuarioAtual == null) {
-            System.out.println(" ERRO: Senha incorreta.");
+            System.out.println("ERRO: Senha incorreta.");
             usuarioAtual = Optional.empty();
             Util.pause();
         }
@@ -154,20 +154,20 @@ public class App implements java.io.Serializable {
      * @throws OperacaoNaoSuportadaException ao chamar {@link App#novoCurso()}
      */
     public void novoAluno() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
-        String senha = Util.lerStr(" Matricula: " + this.proxMatricula + "\n Senha: ");
+        String senha = Util.lerStr("Matricula: " + this.proxMatricula + "\nSenha: ");
         Curso curso = null;
         while (curso == null) {
-            curso = this.cursos.get(Util.lerStr(" Curso: ").toLowerCase());
+            curso = this.cursos.get(Util.lerStr("Curso: ").toLowerCase());
             if (curso == null) {
-                System.out.println(" ERRO: Curso invalido, deseja adicionar o curso antes? (s/n)");
-                if (Util.lerStr(" ").equalsIgnoreCase("s"))
+                System.out.println("ERRO: Curso invalido, deseja adicionar o curso antes? (s/n)");
+                if (Util.lerStr("").equalsIgnoreCase("s"))
                     this.novoCurso();
             }
         }
         this.usuarios.put(
                 this.proxMatricula,
                 new Aluno(
-                        Util.lerStr(" Nome: "),
+                        Util.lerStr("Nome: "),
                         this.proxMatricula++,
                         senha,
                         curso //
@@ -183,7 +183,7 @@ public class App implements java.io.Serializable {
                 this.proxMatricula,
                 new Professor(
                         this.proxMatricula,
-                        Util.lerStr(" Matricula: " + this.proxMatricula++ + "\n Senha: ") //
+                        Util.lerStr("Matricula: " + this.proxMatricula++ + "\nSenha: ") //
                 ) //
         );
     };
@@ -196,7 +196,7 @@ public class App implements java.io.Serializable {
                 this.proxMatricula,
                 new Secretaria(
                         this.proxMatricula,
-                        Util.lerStr(" Matricula: " + this.proxMatricula++ + "\n Senha: ") //
+                        Util.lerStr("Matricula: " + this.proxMatricula++ + "\nSenha: ") //
                 ) //
         );
     };
@@ -245,10 +245,10 @@ public class App implements java.io.Serializable {
      *                                       disciplinas iniciais.
      */
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
-        String nome = Util.lerStr(" Nome: ").toLowerCase(); // lê o nome do curso do usuário
+        String nome = Util.lerStr("Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
         Map<String, Disciplina> disciplinasC = (Map<String, Disciplina>) this
-                .buscaDisciplinas(" Digite as disciplinas do curso separadas por virgula (minimo 4): ")
+                .buscaDisciplinas("Digite as disciplinas do curso separadas por virgula (minimo 4): ")
                 .collect(
                         Collectors.toMap(d -> d.getNome(), d -> d) //
                 ); // transforma o stream em um mapa e o retorna para a variável disciplinasC
@@ -257,7 +257,7 @@ public class App implements java.io.Serializable {
             throw new OperacaoNaoSuportadaException();
 
         Disciplina[] disciplinasIni = this
-                .buscaDisciplinas(" Digite as 4 disciplinas iniciais do curso separadas por virgula: ")
+                .buscaDisciplinas("Digite as 4 disciplinas iniciais do curso separadas por virgula: ")
                 .collect(Collectors.toList()) // transforma o stream em uma lista
                 .toArray(Disciplina[]::new); // transforma a lista em um array
 
@@ -269,7 +269,7 @@ public class App implements java.io.Serializable {
                 new Curso(
                         nome,
                         disciplinasC,
-                        Util.lerInt(" Creditos: "),
+                        Util.lerInt("Creditos: "),
                         disciplinasIni //
                 ) //
         );
@@ -279,13 +279,13 @@ public class App implements java.io.Serializable {
      * Cria e insere uma nova disciplina no mapa de disciplinas.
      */
     public void novaDisciplina() {
-        String nome = Util.lerStr(" Nome: ").toLowerCase();
+        String nome = Util.lerStr("Nome: ").toLowerCase();
         this.disciplinas.put(
                 nome,
                 new Disciplina(
                         nome,
-                        Util.lerInt(" Creditos: "),
-                        Util.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s") //
+                        Util.lerInt("Creditos: "),
+                        Util.lerStr("E opcional? (s/n): ").equalsIgnoreCase("s") //
                 ) //
         );
     };
@@ -329,13 +329,13 @@ public class App implements java.io.Serializable {
      * Altera os dados de uma disciplina no mapa de disciplinas.
      */
     public void alterarDisciplina() {
-        Disciplina disciplina = this.disciplinas.get(Util.lerStr(" Digite o nome da disciplina: ").toLowerCase());
+        Disciplina disciplina = this.disciplinas.get(Util.lerStr("Digite o nome da disciplina: ").toLowerCase());
         if (disciplina == null) {
-            System.out.println(" ERRO: Disciplina nao existente.");
+            System.out.println("ERRO: Disciplina nao existente.");
             return;
         }
-        disciplina.setOpcional(Util.lerStr(" E opcional? (s/n): ").equalsIgnoreCase("s"));
-        disciplina.setCreditos(Util.lerInt(" Creditos: "));
+        disciplina.setOpcional(Util.lerStr("E opcional? (s/n): ").equalsIgnoreCase("s"));
+        disciplina.setCreditos(Util.lerInt("Creditos: "));
     };
 
     /**
@@ -357,7 +357,7 @@ public class App implements java.io.Serializable {
                                                       // usuário é deslogado e enviado para o loop externo
                     ;
             } catch (NoSuchElementException e) {
-                System.out.println(" ERRO: Usuario nao existente.");
+                System.out.println("ERRO: Usuario nao existente.");
             }
         }
     };

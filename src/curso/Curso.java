@@ -66,7 +66,7 @@ public class Curso implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return " Curso " + this.NOME + ", de " + this.creditos + " creditos." + "\n Tem no total "
+        return "Curso " + this.NOME + ", de " + this.creditos + " creditos." + "\nTem no total "
                 + this.disciplinas.size() + " disciplinas.";
     }; // @formatter:off
 

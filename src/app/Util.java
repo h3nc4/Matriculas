@@ -41,7 +41,7 @@ public class Util {
      */
     public static String lerStr(String mensagem) {
         String out = System.console().readLine(mensagem).trim();
-        return out.isEmpty() ? lerStr(" ERRO: Valor invalido. Digite algo: ") : out;
+        return out.isEmpty() ? lerStr("ERRO: Valor invalido. Digite algo: ") : out;
     };
 
     /**
@@ -54,7 +54,7 @@ public class Util {
         try {
             return Integer.parseInt(Util.lerStr(mensagem));
         } catch (NumberFormatException e) {
-            return lerInt(" ERRO: Valor invalido. Digite um numero inteiro: ");
+            return lerInt("ERRO: Valor invalido. Digite um numero inteiro: ");
         }
     };
 
@@ -76,7 +76,7 @@ public class Util {
      * Pausa a execução do programa até que o usuário pressione ENTER.
      */
     public static void pause() {
-        System.console().readLine(" Pressione ENTER para continuar...");
+        System.console().readLine("Pressione ENTER para continuar...");
     };
 
     /**
@@ -89,6 +89,6 @@ public class Util {
         return (hour >= 4 && hour < 12 ? "Bom dia"
                 : hour < 18 ? "Boa tarde"
                         : "Boa Noite")
-                + ", bem vindo ao sistema de matriculas da PUCMG. (-1 para sair)\n Matricula: ";
+                + ", bem vindo ao sistema de matriculas da PUCMG. (-1 para sair)\nMatricula: ";
     };
 }
