@@ -21,7 +21,6 @@
 package usuarios;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import curso.Disciplina;
 import app.App;
@@ -35,10 +34,7 @@ import app.Util;
 public class Professor extends Usuario {
 
     /** disciplinas do professor */
-    private List<Disciplina> disciplinas;
-
-    /** serial version UID */
-    private static final long serialVersionUID = 1L;
+    private LinkedList<Disciplina> disciplinas;
 
     /**
      * Construtor da classe Professor

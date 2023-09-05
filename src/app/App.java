@@ -22,9 +22,8 @@ package app;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -53,22 +52,22 @@ public class App implements java.io.Serializable {
     private Integer proxMatricula;
 
     /** Usuário atual */
-    private transient Optional<Usuario> usuarioAtual;
+    private Usuario usuarioAtual;
 
     /** Mapa de usuários */
-    private Map<Integer, Usuario> usuarios;
+    private HashMap<Integer, Usuario> usuarios;
 
     /** Mapa de cursos */
-    private Map<String, Curso> cursos;
+    private HashMap<String, Curso> cursos;
 
     /** Mapa de disciplinas */
-    private Map<String, Disciplina> disciplinas;
+    private HashMap<String, Disciplina> disciplinas;
 
     /** Padrão Singleton */
     private App() {
         this.matriculasAbertas = Boolean.FALSE;
         this.proxMatricula = 1;
-        this.usuarioAtual = Optional.empty();
+        this.usuarioAtual = null;
         this.usuarios = new HashMap<>();
         this.cursos = new HashMap<>();
         this.disciplinas = new HashMap<>();
@@ -100,8 +99,8 @@ public class App implements java.io.Serializable {
      */
     public void fecharMatriculas() {
         List<Disciplina> aRemover = this.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
-                .filter(d -> !d.estaAtiva() || !d.temProfessor()) // filtra as disciplinas que não estão ativas ou não
-                                                                  // possuem professor
+                .filter(d -> !d.estaAtiva()) // filtra as disciplinas que não estão ativas ou não
+                                             // possuem professor
                 .collect(Collectors.toList()); // transforma o stream em uma lista
 
         if (aRemover.size() == 0) {
@@ -129,19 +128,19 @@ public class App implements java.io.Serializable {
     public Boolean login() {
         Util.limparTerminal();
         try {
-            Integer user = Util.lerInt("" + Util.saudacao());
+            Integer user = Util.lerInt(Util.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr("Senha: ")));
+            this.usuarioAtual = this.usuarios.get(user).login(Util.lerStr("Senha: "));
         } catch (NullPointerException e) {
             System.out.println("ERRO: Usuario nao existente.");
-            usuarioAtual = Optional.empty();
+            this.usuarioAtual = null;
             Util.pause();
             return Boolean.TRUE;
         }
-        if (usuarioAtual == null) {
+        if (this.usuarioAtual == null) {
             System.out.println("ERRO: Senha incorreta.");
-            usuarioAtual = Optional.empty();
+            this.usuarioAtual = null;
             Util.pause();
         }
         return Boolean.TRUE;
@@ -247,7 +246,7 @@ public class App implements java.io.Serializable {
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr("Nome: ").toLowerCase(); // lê o nome do curso do usuário
 
-        Map<String, Disciplina> disciplinasC = (Map<String, Disciplina>) this
+        HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) this
                 .buscaDisciplinas("Digite as disciplinas do curso separadas por virgula (minimo 4): ")
                 .collect(
                         Collectors.toMap(d -> d.getNome(), d -> d) //
@@ -349,15 +348,15 @@ public class App implements java.io.Serializable {
         app.usuarios.put(0, new Secretaria(0, "admin123")); // secretaria padrão
 
         while (app.login()) { // Neste loop, o usuário pode ser deslogado mas não pode sair do programa
-            if (app.usuarioAtual.isEmpty())
+            if (app.usuarioAtual == null)
                 continue;
             try {
-                while (app.usuarioAtual.get().menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele
-                                                      // retorne TRUE, o menu é exibido novamente, caso contrário, o
-                                                      // usuário é deslogado e enviado para o loop externo
+                while (app.usuarioAtual.menu()) // Neste loop, o usuário é apresentado ao seu menu e caso ele
+                                                // retorne TRUE, o menu é exibido novamente, caso contrário, o
+                                                // usuário é deslogado e enviado para o loop externo
                     ;
             } catch (NoSuchElementException e) {
-                System.out.println("ERRO: Usuario nao existente.");
+                System.out.println("ERRO: Usuario nao logado.");
             }
         }
     };
@@ -368,7 +367,6 @@ public class App implements java.io.Serializable {
     public void escrever() {
         Fabrica fabrica = Fabrica.getInstancia();
 
-        this.usuarioAtual = Optional.empty();
         fabrica.escreverObjeto("sistema.ser", this);
     };
 
@@ -379,8 +377,15 @@ public class App implements java.io.Serializable {
         Fabrica fabrica = Fabrica.getInstancia();
 
         App lido = (App) fabrica.lerObjeto("sistema.ser");
-        App.instancia = lido == null ? App.getApp() : lido;
-        App.instancia.usuarioAtual = Optional.empty();
+        if (lido == null)
+            return;
+        App.instancia = lido;
+        // reinsere os usuários no mapa de usuários
+        App.instancia.usuarios
+                .putAll(lido.usuarios.entrySet().stream()
+                        .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()))); //
+        // anula os alunos em todas as disciplinas
+        App.instancia.disciplinas.values().forEach(d -> d.zerarDisc());
     };
 
 }

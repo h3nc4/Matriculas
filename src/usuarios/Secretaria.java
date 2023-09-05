@@ -33,9 +33,6 @@ import app.Util;
  */
 public class Secretaria extends Usuario {
 
-    /** serial version UID */
-    private static final long serialVersionUID = 1L;
-
     /**
      * Construtor da classe Secretaria
      * 

@@ -21,7 +21,6 @@
 package curso;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import error.DisciplinaCompletaException;
 
@@ -46,7 +45,7 @@ public class Disciplina implements java.io.Serializable {
     private Integer creditos;
 
     /** alunos na disciplina */
-    private List<Aluno> alunos;
+    private LinkedList<Aluno> alunos;
 
     /** nome da disciplina */
     private final String NOME;
@@ -56,9 +55,6 @@ public class Disciplina implements java.io.Serializable {
 
     /** numero minimo de alunos na disciplina */
     private static final Integer MIN_ALUNOS = 3;
-
-    /** serial version UID */
-    private static final long serialVersionUID = 1L;
 
     /**
      * Construtor da classe Disciplina
@@ -161,6 +157,9 @@ public class Disciplina implements java.io.Serializable {
 
     /** Retorna os alunos da disciplina
      * @return alunos da disciplina */
-    public List<Aluno> getAlunos() { return this.alunos;   };
+    public LinkedList<Aluno> getAlunos() { return this.alunos;   }
+
+    /** Zero os usuários na disciplina */
+    public void zerarDisc() { this.alunos = new LinkedList<Aluno>(); this.estaAtiva = Boolean.FALSE; this.professor = null; };
 
 }
