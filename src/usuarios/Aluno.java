@@ -223,7 +223,7 @@ public class Aluno extends Usuario {
 
     @Override
     public String toString() {
-        return "Aluno " + this.NOME + " do curso " + this.curso.getNome() + " matriculado em "
+        return "Aluno " + this.matricula+ " " + this.NOME + " do curso " + this.curso.getNome() + " matriculado em "
                 + this.disciplinas.length + " disciplinas: "
                 + Stream.of(this.disciplinas).map(d -> d.getNome()).collect(Collectors.joining(", "));
     };
@@ -246,6 +246,7 @@ public class Aluno extends Usuario {
      */
     public void removeDisciplina(Disciplina d) {
         this.disciplinas = Stream.of(this.disciplinas).filter(disc -> !disc.equals(d)).toArray(Disciplina[]::new);
+        d.removeAluno(this);
     };
 
 }

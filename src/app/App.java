@@ -100,7 +100,7 @@ public class App implements java.io.Serializable {
      */
     public void fecharMatriculas() {
         List<Disciplina> aRemover = this.disciplinas.values().stream() // transforma o mapa de disciplinas em um stream
-                .filter(d -> !d.estaAtiva() || !d.temProfessor()) // filtra as disciplinas que não estão ativas ou não
+                .filter(d -> !d.estaAtiva()) // filtra as disciplinas que não estão ativas ou não
                                                                   // possuem professor
                 .collect(Collectors.toList()); // transforma o stream em uma lista
 
@@ -129,19 +129,19 @@ public class App implements java.io.Serializable {
     public Boolean login() {
         Util.limparTerminal();
         try {
-            Integer user = Util.lerInt("" + Util.saudacao());
+            Integer user = Util.lerInt(Util.saudacao());
             if (user == -1)
                 return Boolean.FALSE;
-            this.usuarioAtual = Optional.ofNullable(usuarios.get(user).login(Util.lerStr("Senha: ")));
+            this.usuarioAtual = Optional.ofNullable(this.usuarios.get(user).login(Util.lerStr("Senha: ")));
         } catch (NullPointerException e) {
             System.out.println("ERRO: Usuario nao existente.");
-            usuarioAtual = Optional.empty();
+            this.usuarioAtual = Optional.empty();
             Util.pause();
             return Boolean.TRUE;
         }
-        if (usuarioAtual == null) {
+        if (this.usuarioAtual == null) {
             System.out.println("ERRO: Senha incorreta.");
-            usuarioAtual = Optional.empty();
+            this.usuarioAtual = Optional.empty();
             Util.pause();
         }
         return Boolean.TRUE;
@@ -357,7 +357,7 @@ public class App implements java.io.Serializable {
                                                       // usuário é deslogado e enviado para o loop externo
                     ;
             } catch (NoSuchElementException e) {
-                System.out.println("ERRO: Usuario nao existente.");
+                System.out.println("ERRO: Usuario nao logado.");
             }
         }
     };
