@@ -88,15 +88,17 @@ public class Professor extends Usuario {
      */
     public void inscreverMateria() {
         Disciplina disciplina = App.getApp().getDisciplina(Util.lerStr("Digite o nome da disciplina: "));
-        if (disciplina != null)
+        if (disciplina != null) {
             this.disciplinas.add(disciplina);
-        else
+            disciplina.adcProfessor(this);
+        } else
             System.out.println("Disciplina não encontrada");
     };
 
     @Override
     public Boolean menu() {
-        Integer escolha = Util.lerInt("\n\n1- Buscar suas disciplinas\n2- Ver as disciplinas disponiveis\n3- Ver alunos em uma disciplina\n4- Se cadastrar em disciplina\n0- Voltar\n");
+        Integer escolha = Util.lerInt(
+                "\n\n1- Buscar suas disciplinas\n2- Ver as disciplinas disponiveis\n3- Ver alunos em uma disciplina\n4- Se cadastrar em disciplina\n0- Voltar\n");
         switch (escolha) {
             case 1 -> System.out.println(this.buscarDisciplinas());
             case 2 -> this.listarDisciplinas();

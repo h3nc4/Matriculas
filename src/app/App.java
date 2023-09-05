@@ -245,6 +245,10 @@ public class App implements java.io.Serializable {
      */
     public void novoCurso() throws ChaveInvalidaException, OperacaoNaoSuportadaException {
         String nome = Util.lerStr("Nome: ").toLowerCase(); // lê o nome do curso do usuário
+        if (this.cursos.containsKey(nome)) { // verifica se o curso já existe
+            System.out.println("ERRO: Curso ja existente.");
+            return;
+        }
 
         HashMap<String, Disciplina> disciplinasC = (HashMap<String, Disciplina>) this
                 .buscaDisciplinas("Digite as disciplinas do curso separadas por virgula (minimo 4): ")
@@ -279,6 +283,10 @@ public class App implements java.io.Serializable {
      */
     public void novaDisciplina() {
         String nome = Util.lerStr("Nome: ").toLowerCase();
+        if (this.disciplinas.containsKey(nome)) {
+            System.out.println("ERRO: Disciplina ja existente.");
+            return;
+        }
         this.disciplinas.put(
                 nome,
                 new Disciplina(
