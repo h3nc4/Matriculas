@@ -197,13 +197,13 @@ public class Aluno extends Usuario {
                 + "\n1- Matricular\n2- Desmatricular\n3- Ver suas disciplinas\n0- Sair\n");
         switch (escolha) {
             case 1 -> {
-                if (App.getApp().matriculasAbertas())
+                if (!App.getApp().matriculasAbertas())
                     System.out.println(
                             "Nao e possivel matricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
                 return this.matricular();
             }
             case 2 -> {
-                if (App.getApp().matriculasAbertas())
+                if (!App.getApp().matriculasAbertas())
                     System.out.println(
                             "Nao e possivel desmatricular-se agora, as matriculas estao fechadas, tente novamente mais tarde.");
                 return this.desmatricular();

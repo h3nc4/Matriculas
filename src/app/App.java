@@ -65,7 +65,7 @@ public class App implements java.io.Serializable {
 
     /** Padrão Singleton */
     private App() {
-        this.matriculasAbertas = Boolean.FALSE;
+        this.matriculasAbertas = Boolean.TRUE;
         this.proxMatricula = 1;
         this.usuarioAtual = null;
         this.usuarios = new HashMap<>();
